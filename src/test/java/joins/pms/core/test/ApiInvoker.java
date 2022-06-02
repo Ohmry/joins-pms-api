@@ -1,6 +1,7 @@
 package joins.pms.core.test;
 
 import com.sun.istack.NotNull;
+import org.json.JSONObject;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.stereotype.Component;
@@ -18,6 +19,27 @@ public class ApiInvoker {
 
     public ApiResultActions get (@NotNull String url) throws Exception {
         ResultActions resultActions = mockMvc.perform(RestDocumentationRequestBuilders.get(url).contentType(MediaType.APPLICATION_JSON));
+        return toApiResultActions(resultActions);
+    }
+
+    public ApiResultActions post (@NotNull String url, String body) throws Exception {
+        ResultActions resultActions = mockMvc.perform(RestDocumentationRequestBuilders.post(url)
+                .content(body).contentType(MediaType.APPLICATION_JSON));
+        return toApiResultActions(resultActions);
+    }
+
+    public ApiResultActions put (@NotNull String url, String body) throws Exception {
+        ResultActions resultActions = mockMvc.perform(RestDocumentationRequestBuilders.put(url)
+                .content(body).contentType(MediaType.APPLICATION_JSON));
+        return toApiResultActions(resultActions);
+    }
+
+    public ApiResultActions delete (@NotNull String url) throws Exception {
+        ResultActions resultActions = mockMvc.perform(RestDocumentationRequestBuilders.delete(url).contentType(MediaType.APPLICATION_JSON));
+        return toApiResultActions(resultActions);
+    }
+
+    private ApiResultActions toApiResultActions (ResultActions resultActions) {
         return new ApiResultActions() {
             @Override
             public ApiResultActions isSuccess() throws Exception {
@@ -26,17 +48,23 @@ public class ApiInvoker {
                         .andExpect(jsonPath("$.message").value("OK"));
                 return this;
             }
-
             @Override
-            public ResultActions andExpect(ResultMatcher matcher) throws Exception {
-                resultActions.andExpect(matcher);
+            public ApiResultActions hasCount(int count) throws Exception {
+                resultActions
+                        .andExpect(jsonPath("$.count").exists())
+                        .andExpect(jsonPath("$.count").isNumber())
+                        .andExpect(jsonPath("$.count").value(count));
                 return this;
             }
 
             @Override
+            public ResultActions andExpect(ResultMatcher matcher) throws Exception {
+                return resultActions.andExpect(matcher);
+            }
+
+            @Override
             public ResultActions andDo(ResultHandler handler) throws Exception {
-                resultActions.andDo(handler);
-                return this;
+                return resultActions.andDo(handler);
             }
 
             @Override
@@ -45,5 +73,4 @@ public class ApiInvoker {
             }
         };
     }
-
 }
