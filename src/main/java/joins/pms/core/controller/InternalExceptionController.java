@@ -1,4 +1,4 @@
-package joins.pms.core.exception;
+package joins.pms.core.controller;
 
 import joins.pms.core.api.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -16,8 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 public class InternalExceptionController implements ErrorController {
     @GetMapping("/error")
     public ApiResponse handle (HttpServletRequest request) {
-        int status = Integer.valueOf(request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE).toString());
-        String path = request.getAttribute(RequestDispatcher.ERROR_REQUEST_URI).toString();
+        int status = Integer.parseInt(request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE).toString());
         return new ApiResponse(HttpStatus.valueOf(status));
     }
 }

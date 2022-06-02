@@ -23,7 +23,9 @@ public class ApiResponse {
         this.status = httpStatus.value();
         this.message = httpStatus.getReasonPhrase();
 
-        if (data instanceof List) {
+        if (data == null) {
+            this.count = 0;
+        } else if (data instanceof List) {
             this.count = ((List<?>) data).size();
         } else {
             this.count = 1;
