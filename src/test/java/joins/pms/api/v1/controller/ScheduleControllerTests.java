@@ -4,10 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import joins.pms.api.v1.dto.ScheduleDto;
 import joins.pms.core.test.ApiInvoker;
 import org.json.JSONObject;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,21 +24,10 @@ public class ScheduleControllerTests {
     @Autowired
     ObjectMapper objectMapper;
     private final String API_URL = "/api/v1/schedule";
-    private Long scheduleId = 1L;
+    private static Long scheduleId = null;
 
     @Test
     @Order(1)
-    void 스케줄_조회 () throws Exception {
-        apiInvoker.get(API_URL)
-                .isSuccess()
-                .hasCount(50)
-                .andExpect(jsonPath("$.data").exists())
-                .andExpect(jsonPath("$.data").isArray())
-                .andDo(print());
-    }
-
-    @Test
-    @Order(2)
     void 스케줄_생성 () throws Exception {
         final String scheduleName = "스케줄 생성 테스트";
         ScheduleDto scheduleDto = new ScheduleDto();
@@ -55,22 +41,33 @@ public class ScheduleControllerTests {
                 .andReturn();
 
         JSONObject jsonObject = new JSONObject(result.getResponse().getContentAsString());
-        this.scheduleId = jsonObject.getLong("data");
+        scheduleId = jsonObject.getLong("data");
 
-        apiInvoker.get(API_URL + "/" + this.scheduleId)
+        apiInvoker.get(API_URL + "/" + scheduleId)
                 .isSuccess()
                 .hasCount(1)
-                .andExpect(jsonPath("$.data.id").value(this.scheduleId))
+                .andExpect(jsonPath("$.data.id").value(scheduleId))
                 .andExpect(jsonPath("$.data.name").value(scheduleName))
+                .andDo(print());
+    }
+
+    @Test
+    @Order(2)
+    void 스케줄_조회 () throws Exception {
+        apiInvoker.get(API_URL)
+                .isSuccess()
+                .hasCount(1)
+                .andExpect(jsonPath("$.data").exists())
+                .andExpect(jsonPath("$.data").isArray())
                 .andDo(print());
     }
 
     @Test
     @Order(3)
     void 스케줄_수정 () throws Exception {
-        MvcResult result = apiInvoker.get(API_URL + "/" + this.scheduleId)
+        MvcResult result = apiInvoker.get(API_URL + "/" + scheduleId)
                 .isSuccess()
-                .andExpect(jsonPath("$.data.id").value(this.scheduleId))
+                .andExpect(jsonPath("$.data.id").value(scheduleId))
                 .andReturn();
 
         JSONObject jsonObject = new JSONObject(result.getResponse().getContentAsString(StandardCharsets.UTF_8));
@@ -82,13 +79,13 @@ public class ScheduleControllerTests {
         apiInvoker.put(API_URL, objectMapper.writeValueAsString(scheduleDto))
                 .isSuccess()
                 .hasCount(1)
-                .andExpect(jsonPath("$.data").value(this.scheduleId))
+                .andExpect(jsonPath("$.data").value(scheduleId))
                 .andDo(print());
 
-        apiInvoker.get(API_URL + "/" + this.scheduleId)
+        apiInvoker.get(API_URL + "/" + scheduleId)
                 .isSuccess()
                 .hasCount(1)
-                .andExpect(jsonPath("$.data.id").value(this.scheduleId))
+                .andExpect(jsonPath("$.data.id").value(scheduleId))
                 .andExpect(jsonPath("$.data.name").value(newName))
                 .andDo(print());
     }
@@ -96,11 +93,11 @@ public class ScheduleControllerTests {
     @Test
     @Order(4)
     void 스케줄_삭제 () throws Exception {
-        apiInvoker.delete(API_URL + "/" + this.scheduleId)
+        apiInvoker.delete(API_URL + "/" + scheduleId)
                 .isSuccess()
                 .andDo(print());
 
-        apiInvoker.get(API_URL + "/" + this.scheduleId)
+        apiInvoker.get(API_URL + "/" + scheduleId)
                 .isSuccess()
                 .hasCount(0)
                 .andExpect(jsonPath("$.data").isEmpty())

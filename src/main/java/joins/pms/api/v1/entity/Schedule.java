@@ -2,10 +2,10 @@ package joins.pms.api.v1.entity;
 
 import joins.pms.api.v1.dto.ScheduleDto;
 import joins.pms.core.entity.BaseEntity;
+import joins.pms.core.entity.RowStatus;
 import lombok.*;
 
 import javax.persistence.*;
-
 
 @Data
 @Entity
@@ -19,11 +19,11 @@ public class Schedule extends BaseEntity {
     private String name;
 
     public Schedule () {}
-    public static Schedule from (ScheduleDto scheduleDto) {
+    public static Schedule of (ScheduleDto scheduleDto) {
         Schedule schedule = new Schedule();
         schedule.setId(scheduleDto.getId());
         schedule.setName(scheduleDto.getName());
-        schedule.setStatus("A");
+        schedule.setStatus(RowStatus.NORMAL);
         return schedule;
     }
 }

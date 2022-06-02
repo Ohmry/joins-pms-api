@@ -29,7 +29,7 @@ public class ScheduleService {
     }
 
     public Long save (ScheduleDto scheduleDto) {
-        Schedule schedule = scheduleRepository.save(Schedule.from(scheduleDto));
+        Schedule schedule = scheduleRepository.save(Schedule.of(scheduleDto));
         return schedule.getId();
     }
 
