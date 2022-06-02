@@ -23,13 +23,17 @@ public class ScheduleService {
         return scheduleRepository.findAll().stream().map(ScheduleVo::of).collect(Collectors.toList());
     }
 
-    public ScheduleVo findById (Long scheduleId) {
-        Optional<Schedule> result = scheduleRepository.findById(scheduleId);
+    public ScheduleVo findById (Long id) {
+        Optional<Schedule> result = scheduleRepository.findById(id);
         return result.map(ScheduleVo::of).orElse(null);
     }
 
     public Long save (ScheduleDto scheduleDto) {
         Schedule schedule = scheduleRepository.save(Schedule.from(scheduleDto));
         return schedule.getId();
+    }
+
+    public void delete (Long id) {
+        scheduleRepository.deleteById(id);
     }
 }

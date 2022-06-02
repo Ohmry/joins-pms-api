@@ -19,19 +19,30 @@ public class ScheduleController {
     }
 
     @GetMapping("/schedule")
-    public ApiResponse getAllSchedule () {
+    public ApiResponse findAll () {
         List<ScheduleVo> list = scheduleService.findAll();
         return new ApiResponse(HttpStatus.OK, list);
     }
 
-    @GetMapping("/schedule/{scheduleId}")
-    public ApiResponse getSchedule (@PathVariable Long scheduleId) {
-        ScheduleVo scheduleVo = scheduleService.findById(scheduleId);
+    @GetMapping("/schedule/{id}")
+    public ApiResponse find (@PathVariable Long id) {
+        ScheduleVo scheduleVo = scheduleService.findById(id);
         return new ApiResponse(HttpStatus.OK, scheduleVo);
     }
 
     @PostMapping("/schedule")
-    public ApiResponse saveSchedule (@RequestBody ScheduleDto scheduleDto) {
+    public ApiResponse save (@RequestBody ScheduleDto scheduleDto) {
         return new ApiResponse(HttpStatus.OK, scheduleService.save(scheduleDto));
+    }
+
+    @PutMapping("/schedule")
+    public ApiResponse update (@RequestBody ScheduleDto scheduleDto) {
+        return new ApiResponse(HttpStatus.OK, scheduleService.save(scheduleDto));
+    }
+
+    @DeleteMapping("/schedule/{id}")
+    public ApiResponse delete (@PathVariable Long id) {
+        scheduleService.delete(id);
+        return new ApiResponse(HttpStatus.OK, null);
     }
 }
