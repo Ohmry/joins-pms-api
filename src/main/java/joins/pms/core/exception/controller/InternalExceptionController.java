@@ -1,4 +1,4 @@
-package joins.pms.core.controller;
+package joins.pms.core.exception.controller;
 
 import joins.pms.core.api.ApiResponse;
 import lombok.extern.slf4j.Slf4j;

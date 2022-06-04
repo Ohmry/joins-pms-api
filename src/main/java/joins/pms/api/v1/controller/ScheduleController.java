@@ -2,8 +2,8 @@ package joins.pms.api.v1.controller;
 
 import joins.pms.api.v1.dto.ScheduleDto;
 import joins.pms.api.v1.service.ScheduleService;
-import joins.pms.api.v1.vo.ScheduleVo;
 import joins.pms.core.api.ApiResponse;
+import joins.pms.core.model.exception.FailedConvertException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,20 +19,20 @@ public class ScheduleController {
     }
 
     @GetMapping("/schedule")
-    public ApiResponse findAll () {
-        List<ScheduleVo> list = scheduleService.findAll();
+    public ApiResponse findAll () throws FailedConvertException {
+        List<ScheduleDto> list = scheduleService.findAll();
         return new ApiResponse(HttpStatus.OK, list);
     }
 
     @GetMapping("/schedule/{id}")
-    public ApiResponse find (@PathVariable Long id) {
-        ScheduleVo scheduleVo = scheduleService.findById(id);
-        return new ApiResponse(HttpStatus.OK, scheduleVo);
+    public ApiResponse find (@PathVariable Long id) throws FailedConvertException {
+        ScheduleDto scheduleDto = scheduleService.findById(id);
+        return new ApiResponse(HttpStatus.OK, scheduleDto);
     }
 
     @PostMapping("/schedule")
     public ApiResponse save (@RequestBody ScheduleDto scheduleDto) {
-        return new ApiResponse(HttpStatus.OK, scheduleService.save(scheduleDto));
+        return new ApiResponse(HttpStatus.CREATED, scheduleService.save(scheduleDto));
     }
 
     @PutMapping("/schedule")
@@ -43,6 +43,6 @@ public class ScheduleController {
     @DeleteMapping("/schedule/{id}")
     public ApiResponse delete (@PathVariable Long id) {
         scheduleService.delete(id);
-        return new ApiResponse(HttpStatus.OK, null);
+        return new ApiResponse(HttpStatus.NO_CONTENT, null);
     }
 }

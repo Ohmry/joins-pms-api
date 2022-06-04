@@ -3,12 +3,13 @@ package joins.pms.api.v1.service;
 import joins.pms.api.v1.dto.ScheduleDto;
 import joins.pms.api.v1.entity.Schedule;
 import joins.pms.api.v1.repository.ScheduleRepository;
-import joins.pms.api.v1.vo.ScheduleVo;
+import joins.pms.core.model.ModelConverter;
+import joins.pms.core.model.exception.FailedConvertException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class ScheduleService {
@@ -19,13 +20,19 @@ public class ScheduleService {
         this.scheduleRepository = scheduleRepository;
     }
 
-    public List<ScheduleVo> findAll () {
-        return scheduleRepository.findAll().stream().map(ScheduleVo::of).collect(Collectors.toList());
+    public List<ScheduleDto> findAll () throws FailedConvertException {
+        List<Schedule> list = scheduleRepository.findAll();
+        List<ScheduleDto> scheduleDtoList = new ArrayList<>();
+        for (Schedule schedule : list) {
+            ScheduleDto scheduleDto = ModelConverter.convert(schedule, ScheduleDto.class);
+            scheduleDtoList.add(scheduleDto);
+        }
+        return scheduleDtoList;
     }
 
-    public ScheduleVo findById (Long id) {
+    public ScheduleDto findById (Long id) throws FailedConvertException {
         Optional<Schedule> result = scheduleRepository.findById(id);
-        return result.map(ScheduleVo::of).orElse(null);
+        return result.isPresent() ? ModelConverter.convert(result.get(), ScheduleDto.class) : null;
     }
 
     public Long save (ScheduleDto scheduleDto) {
