@@ -1,7 +1,7 @@
 package joins.pms.api.v1.service;
 
-import joins.pms.api.v1.dto.ScheduleDto;
-import joins.pms.api.v1.entity.Schedule;
+import joins.pms.api.v1.model.dto.ScheduleDto;
+import joins.pms.api.v1.model.entity.Schedule;
 import joins.pms.api.v1.repository.ScheduleRepository;
 import joins.pms.core.model.ModelConverter;
 import joins.pms.core.model.exception.FailedConvertException;
@@ -10,33 +10,32 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
+    private final ModelConverter modelConverter;
 
-    public ScheduleService (ScheduleRepository scheduleRepository) {
+    public ScheduleService (ScheduleRepository scheduleRepository, ModelConverter modelConverter) {
         this.scheduleRepository = scheduleRepository;
+        this.modelConverter = modelConverter;
     }
 
-    public List<ScheduleDto> findAll () throws FailedConvertException {
+    public List<ScheduleDto> findAll () {
         List<Schedule> list = scheduleRepository.findAll();
-        List<ScheduleDto> scheduleDtoList = new ArrayList<>();
-        for (Schedule schedule : list) {
-            ScheduleDto scheduleDto = ModelConverter.convert(schedule, ScheduleDto.class);
-            scheduleDtoList.add(scheduleDto);
-        }
-        return scheduleDtoList;
+        return list.stream().map(schedule -> modelConverter.convert(schedule, ScheduleDto.class)).collect(Collectors.toList());
     }
 
-    public ScheduleDto findById (Long id) throws FailedConvertException {
-        Optional<Schedule> result = scheduleRepository.findById(id);
-        return result.isPresent() ? ModelConverter.convert(result.get(), ScheduleDto.class) : null;
+    public ScheduleDto findById (Long id) {
+        Optional<Schedule> schedule = scheduleRepository.findById(id);
+        return schedule.map(value -> modelConverter.convert(value, ScheduleDto.class)).orElse(null);
     }
 
     public Long save (ScheduleDto scheduleDto) {
-        Schedule schedule = scheduleRepository.save(Schedule.of(scheduleDto));
+        Schedule schedule = modelConverter.convert(scheduleDto, Schedule.class);
+        schedule = scheduleRepository.save(schedule);
         return schedule.getId();
     }
 

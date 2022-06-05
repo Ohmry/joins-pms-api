@@ -1,7 +1,7 @@
 package joins.pms.api.v1.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import joins.pms.api.v1.dto.ScheduleDto;
+import joins.pms.api.v1.model.dto.ScheduleDto;
 import joins.pms.core.test.ApiInvoker;
 import org.json.JSONObject;
 import org.junit.jupiter.api.MethodOrderer;

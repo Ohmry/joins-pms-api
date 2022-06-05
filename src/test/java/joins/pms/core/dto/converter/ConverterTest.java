@@ -1,7 +1,7 @@
 package joins.pms.core.dto.converter;
 
-import joins.pms.api.v1.entity.Schedule;
-import joins.pms.core.entity.RowStatus;
+import joins.pms.api.v1.model.entity.Schedule;
+import joins.pms.core.model.common.RowStatus;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @SpringBootTest
 public class ConverterTest {
     @Test
-    void DtoConverter_테스트 () throws Exception {
+    void DtoConverter_테스트 () {
         Schedule schedule = new Schedule();
         schedule.setId(1L);
         schedule.setName("테스트");

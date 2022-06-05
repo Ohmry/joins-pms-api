@@ -1,6 +1,6 @@
 package joins.pms.api.v1.controller;
 
-import joins.pms.api.v1.dto.ScheduleDto;
+import joins.pms.api.v1.model.dto.ScheduleDto;
 import joins.pms.api.v1.service.ScheduleService;
 import joins.pms.core.api.ApiResponse;
 import joins.pms.core.model.exception.FailedConvertException;
@@ -19,13 +19,13 @@ public class ScheduleController {
     }
 
     @GetMapping("/schedule")
-    public ApiResponse findAll () throws FailedConvertException {
+    public ApiResponse findAll () {
         List<ScheduleDto> list = scheduleService.findAll();
         return new ApiResponse(HttpStatus.OK, list);
     }
 
     @GetMapping("/schedule/{id}")
-    public ApiResponse find (@PathVariable Long id) throws FailedConvertException {
+    public ApiResponse find (@PathVariable Long id) {
         ScheduleDto scheduleDto = scheduleService.findById(id);
         return new ApiResponse(HttpStatus.OK, scheduleDto);
     }
