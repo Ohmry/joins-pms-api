@@ -1,27 +1,24 @@
 package joins.pms.core.api;
 
 import lombok.Data;
-import org.springframework.http.HttpStatus;
 
 import java.util.List;
 
 @Data
 public class ApiResponse {
-    private final int status;
-    private final String message;
-    private final int count;
-    private final Object data;
+    private int code;
+    private String message;
+    private int count;
+    private Object data;
 
-    public ApiResponse (HttpStatus httpStatus) {
-        this.status = httpStatus.value();
-        this.message = httpStatus.getReasonPhrase();
-        this.count = 0;
-        this.data = null;
+    public ApiResponse () {}
+    public ApiResponse (ApiStatus apiStatus) {
+        this.code = apiStatus.getCode();
+        this.message = apiStatus.getMessage();
     }
-
-    public ApiResponse (HttpStatus httpStatus, Object data) {
-        this.status = httpStatus.value();
-        this.message = httpStatus.getReasonPhrase();
+    public ApiResponse (ApiStatus apiStatus, Object data) {
+        this.code = apiStatus.getCode();
+        this.message = apiStatus.getMessage();
 
         if (data == null) {
             this.count = 0;

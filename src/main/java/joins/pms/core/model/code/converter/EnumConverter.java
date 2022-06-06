@@ -1,4 +1,4 @@
-package joins.pms.core.model.common.converter;
+package joins.pms.core.model.code.converter;
 
 import javax.persistence.AttributeConverter;
 import java.util.EnumSet;

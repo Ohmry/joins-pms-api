@@ -1,8 +1,6 @@
 package joins.pms.api.v1.model.entity;
 
-import joins.pms.api.v1.model.dto.ScheduleDto;
 import joins.pms.core.model.entity.BaseEntity;
-import joins.pms.core.model.common.RowStatus;
 import lombok.*;
 
 import javax.persistence.*;
@@ -18,4 +16,13 @@ public class Schedule extends BaseEntity {
 
     @Column(name = "SCHDL_NM", nullable = false, length = 100)
     private String name;
+
+    @Column(name = "SCHDL_DESC")
+    private String description;
+
+    @Column(name = "START_DE", length = 8)
+    private String startDe;
+
+    @Column(name = "END_DE", length = 8)
+    private String endDe;
 }

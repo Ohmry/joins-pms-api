@@ -1,7 +1,6 @@
-package joins.pms.core.model.common;
+package joins.pms.core.model.code;
 
-import joins.pms.core.model.common.RowStatus;
-import joins.pms.core.model.common.converter.EnumConverter;
+import joins.pms.core.model.code.converter.EnumConverter;
 
 import javax.persistence.Converter;
 @Converter(autoApply = true)

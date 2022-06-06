@@ -1,6 +1,5 @@
 package joins.pms.api.v1.model.entity;
 
-import joins.pms.api.v1.model.common.UserRole;
 import joins.pms.core.model.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -21,10 +20,4 @@ public class User extends BaseEntity {
     private String password;
     @Column(name = "USR_NM", nullable = false, length = 50)
     private String name;
-    @Column(name = "USR_ROLE", nullable = false, length = 3)
-    private UserRole role;
-    @OneToOne(fetch = FetchType.EAGER)
-    @MapsId
-    @JoinColumn(name = "USR_ID")
-    private UserAuth userAuth;
 }

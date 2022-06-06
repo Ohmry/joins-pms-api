@@ -4,6 +4,7 @@ import joins.pms.api.v1.model.dto.UserDto;
 import joins.pms.api.v1.service.UserService;
 import joins.pms.core.api.ApiResponse;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,23 +17,22 @@ public class UserController {
     }
 
     @PostMapping("/signin")
-    public ApiResponse signin (@RequestBody UserDto userDto) {
-
-        return new ApiResponse(HttpStatus.OK, null);
+    public ResponseEntity signin (@RequestBody UserDto userDto) {
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/signup")
-    public ApiResponse signup (@RequestBody UserDto userDto) {
-        return new ApiResponse(HttpStatus.OK, null);
+    public ResponseEntity signup (@RequestBody UserDto userDto) {
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/signout")
-    public ApiResponse signout (Long id) {
-        return new ApiResponse(HttpStatus.OK, null);
+    public ResponseEntity signout (Long id) {
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/dropout")
-    public ApiResponse dropout (Long id) {
-        return new ApiResponse(HttpStatus.OK, null);
+    public ResponseEntity dropout (Long id) {
+        return ResponseEntity.ok().build();
     }
 }

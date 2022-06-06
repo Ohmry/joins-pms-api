@@ -9,4 +9,7 @@ import lombok.EqualsAndHashCode;
 public class ScheduleDto extends BaseDto {
     private Long id;
     private String name;
+    private String description;
+    private String startDe;
+    private String endDe;
 }

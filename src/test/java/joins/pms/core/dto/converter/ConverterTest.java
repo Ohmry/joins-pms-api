@@ -1,7 +1,7 @@
 package joins.pms.core.dto.converter;
 
 import joins.pms.api.v1.model.entity.Schedule;
-import joins.pms.core.model.common.RowStatus;
+import joins.pms.core.model.code.RowStatus;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 

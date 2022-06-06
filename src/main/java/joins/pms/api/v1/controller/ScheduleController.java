@@ -3,10 +3,13 @@ package joins.pms.api.v1.controller;
 import joins.pms.api.v1.model.dto.ScheduleDto;
 import joins.pms.api.v1.service.ScheduleService;
 import joins.pms.core.api.ApiResponse;
-import joins.pms.core.model.exception.FailedConvertException;
-import org.springframework.http.HttpStatus;
+import joins.pms.core.api.ApiStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 
 @RestController
@@ -19,30 +22,42 @@ public class ScheduleController {
     }
 
     @GetMapping("/schedule")
-    public ApiResponse findAll () {
+    public ResponseEntity findAll () {
         List<ScheduleDto> list = scheduleService.findAll();
-        return new ApiResponse(HttpStatus.OK, list);
+        ApiResponse response = new ApiResponse(list.isEmpty() ? ApiStatus.DATA_IS_EMPTY : ApiStatus.SUCCESS, list);
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
     }
 
     @GetMapping("/schedule/{id}")
-    public ApiResponse find (@PathVariable Long id) {
+    public ResponseEntity find (@PathVariable Long id) {
         ScheduleDto scheduleDto = scheduleService.findById(id);
-        return new ApiResponse(HttpStatus.OK, scheduleDto);
+        ApiResponse response = new ApiResponse(scheduleDto == null ? ApiStatus.DATA_IS_EMPTY : ApiStatus.SUCCESS, scheduleDto);
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
     }
 
     @PostMapping("/schedule")
-    public ApiResponse save (@RequestBody ScheduleDto scheduleDto) {
-        return new ApiResponse(HttpStatus.CREATED, scheduleService.save(scheduleDto));
+    public ResponseEntity save (@RequestBody ScheduleDto scheduleDto) throws URISyntaxException {
+        Long id = scheduleService.save(scheduleDto);
+        URI uri = new URI("/schedule/" + id);
+        return ResponseEntity.created(uri)
+                .contentType(MediaType.APPLICATION_JSON)
+                .build();
     }
 
     @PutMapping("/schedule")
-    public ApiResponse update (@RequestBody ScheduleDto scheduleDto) {
-        return new ApiResponse(HttpStatus.OK, scheduleService.save(scheduleDto));
+    public ResponseEntity update (@RequestBody ScheduleDto scheduleDto) throws URISyntaxException {
+        Long id = scheduleService.save(scheduleDto);
+        URI uri = new URI("/schedule/" + id);
+        return ResponseEntity.created(uri).build();
     }
 
     @DeleteMapping("/schedule/{id}")
-    public ApiResponse delete (@PathVariable Long id) {
+    public ResponseEntity delete (@PathVariable Long id) {
         scheduleService.delete(id);
-        return new ApiResponse(HttpStatus.NO_CONTENT, null);
+        return ResponseEntity.noContent().build();
     }
 }

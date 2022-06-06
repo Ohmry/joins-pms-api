@@ -3,11 +3,13 @@ package joins.pms.api.v1.service;
 import joins.pms.api.v1.model.dto.ScheduleDto;
 import joins.pms.api.v1.model.entity.Schedule;
 import joins.pms.api.v1.repository.ScheduleRepository;
+import joins.pms.core.api.ServiceType;
 import joins.pms.core.model.ModelConverter;
-import joins.pms.core.model.exception.FailedConvertException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;

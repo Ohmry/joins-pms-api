@@ -1,6 +1,6 @@
 package joins.pms.core.model.entity;
 
-import joins.pms.core.model.common.RowStatus;
+import joins.pms.core.model.code.RowStatus;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;

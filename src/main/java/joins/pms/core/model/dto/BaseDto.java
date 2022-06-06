@@ -1,6 +1,6 @@
 package joins.pms.core.model.dto;
 
-import joins.pms.core.model.common.RowStatus;
+import joins.pms.core.model.code.RowStatus;
 import lombok.Data;
 
 import java.time.LocalDateTime;

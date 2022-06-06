@@ -1,6 +1,6 @@
-package joins.pms.core.model.common;
+package joins.pms.core.model.code;
 
-import joins.pms.core.model.common.converter.IEnumConverter;
+import joins.pms.core.model.code.converter.IEnumConverter;
 
 public enum RowStatus implements IEnumConverter {
     NORMAL("A"),
