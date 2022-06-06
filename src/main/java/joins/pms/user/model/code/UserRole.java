@@ -1,5 +1,6 @@
-package joins.pms.api.v1.model.code;
+package joins.pms.user.model.code;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import joins.pms.core.model.code.converter.IEnumConverter;
 
 public enum UserRole implements IEnumConverter {
@@ -13,5 +14,9 @@ public enum UserRole implements IEnumConverter {
     @Override
     public String getValue() {
         return this.value;
+    }
+    @JsonCreator
+    public static UserRole converToEnum (String status) {
+        return UserRole.valueOf(status);
     }
 }

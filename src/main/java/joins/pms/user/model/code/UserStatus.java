@@ -1,14 +1,13 @@
-package joins.pms.core.model.code;
+package joins.pms.user.model.code;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import joins.pms.core.model.code.converter.IEnumConverter;
 
-public enum RowStatus implements IEnumConverter {
-    NORMAL("A"),
-    DELETED("D")
+public enum UserStatus implements IEnumConverter {
+    ACTIVATED("ACTV"),
+    LOCKED("LOCK")
     ;
     private final String value;
-    RowStatus (String value) {
+    UserStatus (String value) {
         this.value = value;
     }
     @Override
