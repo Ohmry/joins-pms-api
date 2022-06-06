@@ -1,0 +1,23 @@
+###
+POST http://localhost:9091/user HTTP/1.1
+Content-Type: application/json
+
+{
+  "id": null,
+  "name": "이병훈",
+  "email": "o.ohmry@gmail.com",
+  "password": "oohmry",
+  "userRole": "ADMIN"
+}
+
+###
+GET http://localhost:9091/user/38d42d66-9b38-4fd9-87eb-e286bb6ddb06 HTTP/1.1
+
+###
+POST http://localhost:9091/user/signin HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "o.ohmry@gmail.com",
+  "password": "oohmry"
+}
