@@ -1,5 +1,6 @@
 package joins.pms.api.v1.model.dto;
 
+import joins.pms.api.v1.model.code.UserRole;
 import joins.pms.core.model.dto.BaseDto;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -11,4 +12,5 @@ public class UserDto extends BaseDto {
     private String email;
     private String password;
     private String name;
+    private UserRole userRole;
 }

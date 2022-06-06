@@ -1,5 +1,6 @@
 package joins.pms.api.v1.model.entity;
 
+import joins.pms.api.v1.model.code.UserRole;
 import joins.pms.core.model.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -12,7 +13,7 @@ import javax.persistence.*;
 public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "USR_ID")
+    @Column(name = "USR_ID", nullable = false)
     private Long id;
     @Column(name = "USR_EMAIL", nullable = false, length = 100, unique = true)
     private String email;
@@ -20,4 +21,6 @@ public class User extends BaseEntity {
     private String password;
     @Column(name = "USR_NM", nullable = false, length = 50)
     private String name;
+    @Column(name = "ROLE", nullable = false, length = 3)
+    private UserRole userRole;
 }

@@ -5,6 +5,7 @@ import joins.pms.api.v1.model.entity.Schedule;
 import joins.pms.api.v1.repository.ScheduleRepository;
 import joins.pms.core.api.ServiceType;
 import joins.pms.core.model.ModelConverter;
+import joins.pms.core.model.code.RowStatus;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
@@ -26,12 +27,12 @@ public class ScheduleService {
     }
 
     public List<ScheduleDto> findAll () {
-        List<Schedule> list = scheduleRepository.findAll();
+        List<Schedule> list = scheduleRepository.findAllByStatusNot(RowStatus.DELETED);
         return list.stream().map(schedule -> modelConverter.convert(schedule, ScheduleDto.class)).collect(Collectors.toList());
     }
 
     public ScheduleDto findById (Long id) {
-        Optional<Schedule> schedule = scheduleRepository.findById(id);
+        Optional<Schedule> schedule = scheduleRepository.findByIdAndStatusNot(id, RowStatus.DELETED);
         return schedule.map(value -> modelConverter.convert(value, ScheduleDto.class)).orElse(null);
     }
 

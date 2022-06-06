@@ -1,0 +1,32 @@
+###
+GET http://localhost:9091/api/v1/schedule
+
+###
+POST http://localhost:9091/api/v1/schedule HTTP/1.1
+Content-Type: application/json
+
+{
+  "id": null,
+  "name": "스케줄 생성 테스트",
+  "description": "테스트용 스케줄 정보",
+  "startDe": "20220606",
+  "endDe": "20220606"
+}
+
+###
+GET http://localhost:9091/api/v1/schedule/1 HTTP/1.1
+
+###
+PUT http://localhost:9091/api/v1/schedule HTTP/1.1
+Content-Type: application/json
+
+{
+  "id": 1,
+  "name": "스케줄 생성 테스트_수정",
+  "description": "테스트용 스케줄 정보_수정",
+  "startDe": "20220606",
+  "endDe": "20221231"
+}
+
+###
+DELETE http://localhost:9091/api/v1/schedule/1 HTTP/1.1

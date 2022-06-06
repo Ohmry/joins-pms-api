@@ -1,4 +1,4 @@
-package joins.pms.core.dto.converter;
+package joins.pms.core.model;
 
 import joins.pms.api.v1.model.entity.Schedule;
 import joins.pms.core.model.code.RowStatus;
@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.time.LocalDateTime;
 
 @SpringBootTest
-public class ConverterTest {
+public class ModelConverterTest {
     @Test
     void DtoConverter_테스트 () {
         Schedule schedule = new Schedule();
