@@ -7,7 +7,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
 
-@SpringBootTest
 public class ModelConverterTest {
     @Test
     void DtoConverter_테스트 () {

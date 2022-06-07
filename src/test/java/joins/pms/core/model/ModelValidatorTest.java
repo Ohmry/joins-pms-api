@@ -6,11 +6,9 @@ import org.junit.jupiter.api.Test;
 
 public class ModelValidatorTest {
     ModelValidator modelValidator;
-
     public ModelValidatorTest () {
         this.modelValidator = new ModelValidator();
     }
-
     @Test
     void checkAllFieldExists () {
         ScheduleDto scheduleDto = new ScheduleDto();

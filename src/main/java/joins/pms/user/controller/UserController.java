@@ -80,7 +80,13 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse> findById (@PathVariable UUID id) {
         UserDto userDto = userService.findById(id);
-        ApiResponse response = new ApiResponse(userDto == null ? ApiStatus.DATA_IS_EMPTY : ApiStatus.SUCCESS, userDto);
+        ApiResponse response;
+        if (userDto == null) {
+            response = new ApiResponse(ApiStatus.DATA_IS_EMPTY, null);
+        } else {
+            userDto.setPassword("");
+            response = new ApiResponse(ApiStatus.SUCCESS, userDto);
+        }
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(response);
