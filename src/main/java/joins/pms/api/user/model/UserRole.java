@@ -15,8 +15,8 @@ public enum UserRole implements IEnumConverter {
     public String getValue() {
         return this.value;
     }
-    @JsonCreator
-    public static UserRole converToEnum (String status) {
-        return UserRole.valueOf(status);
+    @Override
+    public Enum getEnum(String value) {
+        return UserRole.valueOf(value);
     }
 }

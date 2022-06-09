@@ -14,4 +14,8 @@ public enum UserStatus implements IEnumConverter {
     public String getValue() {
         return this.value;
     }
+    @Override
+    public Enum getEnum(String value) {
+        return UserStatus.valueOf(value);
+    }
 }

@@ -19,8 +19,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                // 사용자와 관련된 API도 허용한다.
-                .antMatchers("/user/**").permitAll()
                 // /api/** API로 요청이 올 경우 모두 허용한다.
                 .antMatchers("/api/**").permitAll()
                 // H2 콘솔을 열기 위해서 /console/** 요청도 모두 허용한다.

@@ -1,5 +1,7 @@
-package joins.pms.core.model;
+package joins.pms.core.model.validator;
 
+import joins.pms.core.model.BaseDto;
+import joins.pms.core.model.BaseEntity;
 import org.springframework.stereotype.Component;
 
 import java.lang.annotation.Annotation;

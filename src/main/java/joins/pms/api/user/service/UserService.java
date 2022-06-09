@@ -6,7 +6,7 @@ import joins.pms.api.user.model.UserStatus;
 import joins.pms.api.user.model.UserDto;
 import joins.pms.api.user.model.User;
 import joins.pms.api.user.repository.UserRepository;
-import joins.pms.core.model.ModelConverter;
+import joins.pms.core.model.converter.ModelConverter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -62,5 +62,8 @@ public class UserService {
         } else {
             return null;
         }
+    }
+    public String encryptPassword (String plainPassword) {
+        return passwordEncoder.encode(plainPassword);
     }
 }

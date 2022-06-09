@@ -1,6 +1,6 @@
 package joins.pms.api.user.service;
 
-import joins.pms.core.model.ModelConverter;
+import joins.pms.core.model.converter.ModelConverter;
 import joins.pms.api.user.model.UserSessionDto;
 import joins.pms.api.user.model.UserSession;
 import joins.pms.api.user.repository.UserSessionRepository;

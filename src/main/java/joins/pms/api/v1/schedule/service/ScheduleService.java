@@ -3,7 +3,7 @@ package joins.pms.api.v1.schedule.service;
 import joins.pms.api.v1.schedule.model.ScheduleDto;
 import joins.pms.api.v1.schedule.model.Schedule;
 import joins.pms.api.v1.schedule.repository.ScheduleRepository;
-import joins.pms.core.model.ModelConverter;
+import joins.pms.core.model.converter.ModelConverter;
 import joins.pms.core.model.RowStatus;
 import org.springframework.stereotype.Service;
 

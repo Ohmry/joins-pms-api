@@ -24,10 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ScheduleControllerTests {
     @Autowired
     ApiInvoker apiInvoker;
-    @Autowired
-    ObjectMapper objectMapper;
     private final String API_URL = "/api/v1/schedule";
-    private final static Long scheduleId = null;
 
     @Test
     @Order(1)
