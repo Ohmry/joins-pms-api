@@ -1,13 +1,9 @@
 package joins.pms.core.model;
 
-import joins.pms.core.model.dto.BaseDto;
-import joins.pms.core.model.entity.BaseEntity;
 import org.springframework.stereotype.Component;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 @Component
 public class ModelValidator {

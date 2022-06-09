@@ -1,7 +1,6 @@
 package joins.pms.api.v1.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import joins.pms.api.v1.model.dto.ScheduleDto;
 import joins.pms.core.api.ApiStatus;
 import joins.pms.core.test.ApiInvoker;
 import org.json.JSONObject;
@@ -13,8 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MvcResult;
-
-import java.nio.charset.StandardCharsets;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;

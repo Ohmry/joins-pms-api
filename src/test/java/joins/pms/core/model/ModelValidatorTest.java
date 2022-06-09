@@ -1,7 +1,7 @@
 package joins.pms.core.model;
 
-import joins.pms.api.v1.model.dto.ScheduleDto;
-import joins.pms.api.v1.model.entity.Schedule;
+import joins.pms.api.v1.schedule.model.ScheduleDto;
+import joins.pms.api.v1.schedule.model.Schedule;
 import org.junit.jupiter.api.Test;
 
 public class ModelValidatorTest {
