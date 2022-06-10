@@ -1,13 +1,14 @@
 package joins.pms.api.user.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import joins.pms.api.user.model.UserDto;
+import joins.pms.api.user.service.UserService;
+import joins.pms.api.user.service.UserSessionService;
 import joins.pms.core.api.ApiResponse;
 import joins.pms.core.api.ApiStatus;
 import joins.pms.core.model.converter.ModelConverter;
 import joins.pms.core.service.CookieService;
-import joins.pms.api.user.model.UserDto;
-import joins.pms.api.user.model.UserSessionDto;
-import joins.pms.api.user.service.UserService;
-import joins.pms.api.user.service.UserSessionService;
+import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.UUID;
 
@@ -26,16 +26,19 @@ public class UserController {
     private final UserSessionService userSessionService;
     private final CookieService cookieService;
     private final ModelConverter modelConverter;
+    private final ObjectMapper objectMapper;
     private final String API_URL = "/user";
 
     public UserController (UserService userService,
                            UserSessionService userSessionService,
                            CookieService cookieService,
-                           ModelConverter modelConverter) {
+                           ModelConverter modelConverter,
+                           ObjectMapper objectMapper) {
         this.userService = userService;
         this.userSessionService = userSessionService;
         this.cookieService = cookieService;
         this.modelConverter = modelConverter;
+        this.objectMapper = objectMapper;
     }
 
     @PostMapping("/signin")
@@ -62,14 +65,16 @@ public class UserController {
         return ResponseEntity.created(new URI(API_URL + "/" + id)).build();
     }
     @GetMapping("/user/{id}")
-    public ResponseEntity<ApiResponse> findById (@PathVariable UUID id) {
+    public ResponseEntity<ApiResponse> findById (@PathVariable UUID id) throws Exception {
         UserDto userDto = userService.findById(id);
         ApiResponse response;
         if (userDto == null) {
             response = new ApiResponse(ApiStatus.DATA_IS_EMPTY, null);
         } else {
-            userDto.setPassword("");
-            response = new ApiResponse(ApiStatus.SUCCESS, userDto);
+            objectMapper.
+            JSONObject jsonObject = new JSONObject(userDto.toString());
+            jsonObject.remove("password");
+            response = new ApiResponse(ApiStatus.SUCCESS, jsonObject);
         }
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_JSON)

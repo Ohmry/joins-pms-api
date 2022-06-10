@@ -30,8 +30,8 @@ public class UserControllerTests {
         jsonObject.put("name", "홍길동");
         jsonObject.put("email", "o.ohmry@gmail.com");
         jsonObject.put("password", "oohmry");
-        jsonObject.put("userRole", "USR");
-        jsonObject.put("userStatus", "ACTV");
+        jsonObject.put("userRole", "USER");
+        jsonObject.put("userStatus", "ACTIVATED");
         return jsonObject;
     }
 
@@ -46,7 +46,7 @@ public class UserControllerTests {
                 .andReturn();
         String uri = result.getResponse().getHeader("Location");
         assert uri != null;
-        String userId = uri.substring(4);
+        String userId = uri.substring(6);
         UserControllerTests.userId = userId;
         apiInvoker.get(API_URL + "/" + userId)
                 .andExpect(status().isOk())

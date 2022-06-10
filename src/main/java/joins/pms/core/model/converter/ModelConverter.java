@@ -5,6 +5,7 @@ import joins.pms.core.model.BaseEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -27,24 +28,17 @@ public class ModelConverter {
                 if (methodName.startsWith("set")) {
                     String fieldName = methodName.substring(3, 4).toLowerCase() + methodName.substring(4);
                     if (map.keySet().contains(fieldName)) {
-                        Class fieldType = method.getParameterTypes()[0];
-                        boolean isEnum = false;
-                        for (Class inf : fieldType.getInterfaces()) {
-                            if (inf.equals(IEnumConverter.class)) {
-                                isEnum = true;
-                            }
-                        }
-                        if (isEnum) {
-                            Method getEnumMethod = dtoClass.getMethod("getEnum");
-                            method.invoke(dist, getEnumMethod.invoke(fieldType, map.get(fieldName).toString()));
+                        Field field = dtoClass.getDeclaredField(fieldName);
+                        if (field.getType().isEnum()) {
+                            method.invoke(dist, Enum.valueOf((Class<Enum>) field.getType(), map.get(fieldName).toString()));
                         } else {
-                            method.invoke(dist, fieldType.cast(map.get(fieldName)));
+                            method.invoke(dist, field.getType().cast(map.get(fieldName)));
                         }
                     }
                 }
             }
             return dist;
-        } catch (NoSuchMethodException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
+        } catch (NoSuchMethodException | NoSuchFieldException | InvocationTargetException | InstantiationException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
     }
