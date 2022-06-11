@@ -1,6 +1,5 @@
 package joins.pms.api.v1.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import joins.pms.core.api.ApiStatus;
 import joins.pms.core.test.ApiInvoker;
 import org.json.JSONObject;
@@ -42,7 +41,6 @@ public class ScheduleControllerTests {
     @Order(2)
     void 새로운_스케줄_정보_생성 () throws Exception {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("id", null);
         jsonObject.put("name", "테스트 스케줄정보 생성");
         jsonObject.put("description", "테스트로 생성한 스케줄 정보입니다.");
         jsonObject.put("startDe", "20220606");

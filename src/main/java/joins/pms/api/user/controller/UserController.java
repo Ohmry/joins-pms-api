@@ -1,6 +1,5 @@
 package joins.pms.api.user.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import joins.pms.api.user.model.UserDto;
 import joins.pms.api.user.service.UserService;
 import joins.pms.api.user.service.UserSessionService;
@@ -8,7 +7,7 @@ import joins.pms.core.api.ApiResponse;
 import joins.pms.core.api.ApiStatus;
 import joins.pms.core.model.converter.ModelConverter;
 import joins.pms.core.service.CookieService;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
+import org.json.JSONObject;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,19 +25,16 @@ public class UserController {
     private final UserSessionService userSessionService;
     private final CookieService cookieService;
     private final ModelConverter modelConverter;
-    private final ObjectMapper objectMapper;
     private final String API_URL = "/user";
 
     public UserController (UserService userService,
                            UserSessionService userSessionService,
                            CookieService cookieService,
-                           ModelConverter modelConverter,
-                           ObjectMapper objectMapper) {
+                           ModelConverter modelConverter) {
         this.userService = userService;
         this.userSessionService = userSessionService;
         this.cookieService = cookieService;
         this.modelConverter = modelConverter;
-        this.objectMapper = objectMapper;
     }
 
     @PostMapping("/signin")
@@ -71,7 +67,7 @@ public class UserController {
         if (userDto == null) {
             response = new ApiResponse(ApiStatus.DATA_IS_EMPTY, null);
         } else {
-            objectMapper.
+            System.out.println(userDto.toString());
             JSONObject jsonObject = new JSONObject(userDto.toString());
             jsonObject.remove("password");
             response = new ApiResponse(ApiStatus.SUCCESS, jsonObject);
