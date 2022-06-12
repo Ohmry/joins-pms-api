@@ -1,7 +1,5 @@
 package joins.pms.api.v1.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import joins.pms.api.v1.model.dto.ScheduleDto;
 import joins.pms.core.api.ApiStatus;
 import joins.pms.core.test.ApiInvoker;
 import org.json.JSONObject;
@@ -14,8 +12,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MvcResult;
 
-import java.nio.charset.StandardCharsets;
-
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -27,10 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ScheduleControllerTests {
     @Autowired
     ApiInvoker apiInvoker;
-    @Autowired
-    ObjectMapper objectMapper;
     private final String API_URL = "/api/v1/schedule";
-    private final static Long scheduleId = null;
 
     @Test
     @Order(1)
@@ -48,7 +41,6 @@ public class ScheduleControllerTests {
     @Order(2)
     void 새로운_스케줄_정보_생성 () throws Exception {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("id", null);
         jsonObject.put("name", "테스트 스케줄정보 생성");
         jsonObject.put("description", "테스트로 생성한 스케줄 정보입니다.");
         jsonObject.put("startDe", "20220606");
