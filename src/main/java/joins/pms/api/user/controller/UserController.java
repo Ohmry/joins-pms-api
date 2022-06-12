@@ -2,17 +2,13 @@ package joins.pms.api.user.controller;
 
 import joins.pms.api.user.model.UserDto;
 import joins.pms.api.user.service.UserService;
-import joins.pms.api.user.service.UserSessionService;
 import joins.pms.core.api.ApiResponse;
 import joins.pms.core.api.ApiStatus;
 import joins.pms.core.model.converter.ModelConverter;
-import joins.pms.core.service.CookieService;
-import org.json.JSONObject;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Map;
@@ -22,29 +18,15 @@ import java.util.UUID;
 @RequestMapping("/api")
 public class UserController {
     private final UserService userService;
-    private final UserSessionService userSessionService;
-    private final CookieService cookieService;
     private final ModelConverter modelConverter;
     private final String API_URL = "/user";
 
     public UserController (UserService userService,
-                           UserSessionService userSessionService,
-                           CookieService cookieService,
                            ModelConverter modelConverter) {
         this.userService = userService;
-        this.userSessionService = userSessionService;
-        this.cookieService = cookieService;
         this.modelConverter = modelConverter;
     }
 
-    @PostMapping("/signin")
-    public ResponseEntity<ApiResponse> signin (HttpServletRequest httpServletRequest, @RequestBody UserDto userDto) {
-        return null;
-    }
-    @PostMapping("/signout")
-    public ResponseEntity<ApiResponse> signout (HttpServletRequest httpServletRequest, @RequestBody UserDto userDto) {
-        return null;
-    }
     @PostMapping(API_URL)
     public ResponseEntity<ApiResponse> signup (@RequestBody UserDto userDto) throws URISyntaxException {
         if (userDto.getEmail().isEmpty() || userDto.getPassword().isEmpty()) {
@@ -74,13 +56,27 @@ public class UserController {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(response);
     }
+
     @PutMapping(API_URL)
-    public ResponseEntity<ApiResponse> update (@RequestBody Map<String, Object> requestBody) {
-        return null;
+    public ResponseEntity<ApiResponse> update (@RequestBody UserDto userDto) throws URISyntaxException {
+        if (userDto.getId() == null) {
+            return ResponseEntity.badRequest()
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(new ApiResponse(ApiStatus.IDENTIFY_NEEDS_NOT_EMPTY));
+        }
+        UUID id = userService.save(userDto);
+        return ResponseEntity.created(new URI(API_URL + "/" + id)).build();
     }
+
     @DeleteMapping(API_URL)
-    public ResponseEntity<ApiResponse> leave (@RequestBody Map<String, Object> requestBody) {
-        return null;
+    public ResponseEntity<ApiResponse> leave (@RequestBody UserDto userDto) {
+        if (userDto.getId() == null) {
+            return ResponseEntity.badRequest()
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(new ApiResponse(ApiStatus.IDENTIFY_NEEDS_NOT_EMPTY));
+        }
+        userService.delete(userDto.getId());
+        return ResponseEntity.noContent().build();
     }
 
 

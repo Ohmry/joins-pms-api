@@ -23,12 +23,12 @@ public class ScheduleService {
     }
 
     public List<ScheduleDto> findAll () {
-        List<Schedule> list = scheduleRepository.findAllByStatusNot(RowStatus.DELETED);
+        List<Schedule> list = scheduleRepository.findAllByRowStatusNot(RowStatus.DELETED);
         return list.stream().map(schedule -> modelConverter.convert(schedule, ScheduleDto.class)).collect(Collectors.toList());
     }
 
     public ScheduleDto findById (Long id) {
-        Optional<Schedule> schedule = scheduleRepository.findByIdAndStatusNot(id, RowStatus.DELETED);
+        Optional<Schedule> schedule = scheduleRepository.findByIdAndRowStatusNot(id, RowStatus.DELETED);
         return schedule.map(value -> modelConverter.convert(value, ScheduleDto.class)).orElse(null);
     }
 

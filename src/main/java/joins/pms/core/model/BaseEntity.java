@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public abstract class BaseEntity {
     @Column(name = "ROW_STATUS", length = 1, nullable = false)
-    public RowStatus status;
+    public RowStatus rowStatus;
 
     @CreationTimestamp
     @Column(name = "CREATED_DT", updatable = false)

@@ -58,7 +58,7 @@ public class ScheduleController {
     @DeleteMapping("/" + API_NAME + "/{id}")
     public ResponseEntity<ApiResponse> delete (@PathVariable Long id) throws URISyntaxException {
         ScheduleDto scheduleDto = scheduleService.findById(id);
-        scheduleDto.setStatus(RowStatus.DELETED);
+        scheduleDto.setRowStatus(RowStatus.DELETED);
         scheduleService.save(scheduleDto);
         URI uri = new URI("/schedule/" + id);
         return ResponseEntity.noContent().build();

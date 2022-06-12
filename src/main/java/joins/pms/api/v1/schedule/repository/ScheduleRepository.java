@@ -10,6 +10,6 @@ import java.util.Optional;
 
 @Repository
 public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
-    List<Schedule> findAllByStatusNot (RowStatus status);
-    Optional<Schedule> findByIdAndStatusNot (Long id, RowStatus status);
+    List<Schedule> findAllByRowStatusNot (RowStatus status);
+    Optional<Schedule> findByIdAndRowStatusNot (Long id, RowStatus status);
 }

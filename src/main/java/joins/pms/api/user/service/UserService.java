@@ -27,8 +27,9 @@ public class UserService {
         this.modelConverter = modelConverter;
         this.passwordEncoder = passwordEncoder;
     }
+
     public UserDto findById (UUID id) {
-        Optional<User> found = userRepository.findById(id);
+        Optional<User> found = userRepository.findByIdAndRowStatus(id, RowStatus.NORMAL);
         return found.map(user -> modelConverter.convert(user, UserDto.class)).orElse(null);
     }
 
@@ -42,8 +43,8 @@ public class UserService {
         if (userDto.getUserStatus() == null) {
             userDto.setUserStatus(UserStatus.ACTIVATED);
         }
-        if (userDto.getStatus() == null) {
-            userDto.setStatus(RowStatus.NORMAL);
+        if (userDto.getRowStatus() == null) {
+            userDto.setRowStatus(RowStatus.NORMAL);
         }
         User user = modelConverter.convert(userDto, User.class);
         user = userRepository.save(user);
@@ -54,7 +55,9 @@ public class UserService {
         Optional<User> found = userRepository.findById(id);
         UserDto userDto = found.map(user -> modelConverter.convert(user, UserDto.class))
                 .orElseThrow(() -> new NullPointerException(id.toString()));
-        userDto.setStatus(RowStatus.DELETED);
+        userDto.setRowStatus(RowStatus.DELETED);
+        User user = modelConverter.convert(userDto, User.class);
+        userRepository.save(user);
     }
     public UserDto signin (UserDto userDto) {
         String password = userDto.getPassword();

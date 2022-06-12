@@ -32,6 +32,10 @@ public class ApiInvoker {
                 .content(body).contentType(MediaType.APPLICATION_JSON));
     }
 
+    public ResultActions delete (@NotNull String url, String body) throws Exception {
+        return mockMvc.perform(RestDocumentationRequestBuilders.delete(url).contentType(MediaType.APPLICATION_JSON).content(body));
+    }
+
     public ResultActions delete (@NotNull String url) throws Exception {
         return mockMvc.perform(RestDocumentationRequestBuilders.delete(url).contentType(MediaType.APPLICATION_JSON));
     }

@@ -1,5 +1,5 @@
 ###
-POST http://localhost:9091/user HTTP/1.1
+POST http://localhost:9091/api/user HTTP/1.1
 Content-Type: application/json
 
 {
@@ -11,10 +11,10 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:9091/user/38d42d66-9b38-4fd9-87eb-e286bb6ddb06 HTTP/1.1
+GET http://localhost:9091/api/user/9856b6d6-e5e5-4b5a-8359-e68254aea126 HTTP/1.1
 
 ###
-POST http://localhost:9091/user/signin HTTP/1.1
+POST http://localhost:9091/api/signin HTTP/1.1
 Content-Type: application/json
 
 {
