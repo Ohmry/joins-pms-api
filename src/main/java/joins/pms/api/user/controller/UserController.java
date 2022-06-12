@@ -42,12 +42,11 @@ public class UserController {
         return null;
     }
     @PostMapping("/signout")
-    public ResponseEntity<ApiResponse> signout (HttpServletRequest httpServletRequest, @RequestBody Map<String, Object> reqeustBody) {
+    public ResponseEntity<ApiResponse> signout (HttpServletRequest httpServletRequest, @RequestBody UserDto userDto) {
         return null;
     }
-    @PostMapping("/user")
-    public ResponseEntity<ApiResponse> signup (@RequestBody Map<String, Object> requestBody) throws URISyntaxException {
-        UserDto userDto = modelConverter.convert(requestBody, UserDto.class);
+    @PostMapping(API_URL)
+    public ResponseEntity<ApiResponse> signup (@RequestBody UserDto userDto) throws URISyntaxException {
         if (userDto.getEmail().isEmpty() || userDto.getPassword().isEmpty()) {
             return ResponseEntity.badRequest()
                     .contentType(MediaType.APPLICATION_JSON)
@@ -60,27 +59,26 @@ public class UserController {
         UUID id = userService.save(userDto);
         return ResponseEntity.created(new URI(API_URL + "/" + id)).build();
     }
-    @GetMapping("/user/{id}")
-    public ResponseEntity<ApiResponse> findById (@PathVariable UUID id) throws Exception {
+    @GetMapping(API_URL + "/{id}")
+    public ResponseEntity<ApiResponse> findById (@PathVariable UUID id) {
         UserDto userDto = userService.findById(id);
         ApiResponse response;
         if (userDto == null) {
             response = new ApiResponse(ApiStatus.DATA_IS_EMPTY, null);
         } else {
-            System.out.println(userDto.toString());
-            JSONObject jsonObject = new JSONObject(userDto.toString());
-            jsonObject.remove("password");
-            response = new ApiResponse(ApiStatus.SUCCESS, jsonObject);
+            Map userMap = modelConverter.convert(userDto, Map.class);
+            userMap.remove("password");
+            response = new ApiResponse(ApiStatus.SUCCESS, userMap);
         }
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(response);
     }
-    @PutMapping("/user")
+    @PutMapping(API_URL)
     public ResponseEntity<ApiResponse> update (@RequestBody Map<String, Object> requestBody) {
         return null;
     }
-    @DeleteMapping("/user")
+    @DeleteMapping(API_URL)
     public ResponseEntity<ApiResponse> leave (@RequestBody Map<String, Object> requestBody) {
         return null;
     }

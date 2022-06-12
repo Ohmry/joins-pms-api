@@ -9,6 +9,7 @@ import joins.pms.api.user.repository.UserRepository;
 import joins.pms.core.model.converter.ModelConverter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -30,6 +31,8 @@ public class UserService {
         Optional<User> found = userRepository.findById(id);
         return found.map(user -> modelConverter.convert(user, UserDto.class)).orElse(null);
     }
+
+    @Transactional
     public UUID save (UserDto userDto) {
         String encryptedPassword = passwordEncoder.encode(userDto.getPassword());
         userDto.setPassword(encryptedPassword);
@@ -46,6 +49,7 @@ public class UserService {
         user = userRepository.save(user);
         return user.getId();
     }
+    @Transactional
     public void delete (UUID id) {
         Optional<User> found = userRepository.findById(id);
         UserDto userDto = found.map(user -> modelConverter.convert(user, UserDto.class))
