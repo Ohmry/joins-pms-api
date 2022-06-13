@@ -43,7 +43,7 @@ public class UserController {
     }
     @GetMapping(API_URL + "/{id}")
     public ResponseEntity<ApiResponse> findById (@PathVariable UUID id) {
-        UserDto userDto = userService.findById(id);
+        UserDto userDto = userService.find(id);
         ApiResponse response;
         if (userDto == null) {
             response = new ApiResponse(ApiStatus.DATA_IS_EMPTY, null);
@@ -78,67 +78,4 @@ public class UserController {
         userService.delete(userDto.getId());
         return ResponseEntity.noContent().build();
     }
-
-
-
-//
-//    @PostMapping("/signin")
-//    public ResponseEntity<ApiResponse> signin (HttpServletRequest httpServletRequest, @RequestBody UserDto userDto) {
-//        userDto = userService.signin(userDto);
-//        if (userDto == null) {
-//            return ResponseEntity.badRequest()
-//                    .contentType(MediaType.APPLICATION_JSON)
-//                    .body(new ApiResponse(ApiStatus.FAILED_TO_LOGIN));
-//        }
-//
-//        String jsessionId = cookieService.getCookieValue(httpServletRequest, "JSESSIONID");
-//        if (jsessionId == null) {
-//            return ResponseEntity.badRequest()
-//                    .contentType(MediaType.APPLICATION_JSON)
-//                    .body(new ApiResponse(ApiStatus.ABNORMAL_ACCESS));
-//        }
-//
-//        UserSessionDto userSessionDto = new UserSessionDto();
-//        userSessionDto.setId(userDto.getId());
-//        userSessionDto.setSession(jsessionId);
-//        userSessionDto.setExpireDateTime(LocalDateTime.now().plusMinutes(30));
-//        LocalDateTime expireDateTime = userSessionService.save(userSessionDto);
-//
-//        ApiResponse response = new ApiResponse(ApiStatus.SUCCESS, expireDateTime);
-//        return ResponseEntity.ok()
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .body(response);
-//    }
-//    @PostMapping("/" + API_URL + "/signout")
-//    public ResponseEntity<ApiResponse> signout (UUID id) {
-//        return ResponseEntity.ok().build();
-//    }
-//    @PostMapping
-//    public ResponseEntity<ApiResponse> signup (@RequestBody UserDto userDto) throws URISyntaxException {
-//        if (userDto.getEmail().isEmpty() || userDto.getPassword().isEmpty()) {
-//            return ResponseEntity.badRequest()
-//                    .contentType(MediaType.APPLICATION_JSON)
-//                    .body(new ApiResponse(ApiStatus.REQUIRED_PARAMETER_IS_NOT_FOUND));
-//        } else if (userDto.getId() != null) {
-//            return ResponseEntity.badRequest()
-//                    .contentType(MediaType.APPLICATION_JSON)
-//                    .body(new ApiResponse(ApiStatus.IDENTIFY_NEEDS_EMPTY));
-//        }
-//        UUID id = userService.save(userDto);
-//        return ResponseEntity.created(new URI(API_URL + "/" + id)).build();
-//    }
-//    @GetMapping("/{id}")
-//    public ResponseEntity<ApiResponse> findById (@PathVariable UUID id) {
-//        UserDto userDto = userService.findById(id);
-//        ApiResponse response;
-//        if (userDto == null) {
-//            response = new ApiResponse(ApiStatus.DATA_IS_EMPTY, null);
-//        } else {
-//            userDto.setPassword("");
-//            response = new ApiResponse(ApiStatus.SUCCESS, userDto);
-//        }
-//        return ResponseEntity.ok()
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .body(response);
-//    }
 }

@@ -28,7 +28,7 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public UserDto findById (UUID id) {
+    public UserDto find (UUID id) {
         Optional<User> found = userRepository.findByIdAndRowStatus(id, RowStatus.NORMAL);
         return found.map(user -> modelConverter.convert(user, UserDto.class)).orElse(null);
     }
@@ -50,6 +50,7 @@ public class UserService {
         user = userRepository.save(user);
         return user.getId();
     }
+
     @Transactional
     public void delete (UUID id) {
         Optional<User> found = userRepository.findById(id);
@@ -59,6 +60,7 @@ public class UserService {
         User user = modelConverter.convert(userDto, User.class);
         userRepository.save(user);
     }
+
     public UserDto signin (UserDto userDto) {
         String password = userDto.getPassword();
         if (password == null) return null;
@@ -70,6 +72,7 @@ public class UserService {
             return null;
         }
     }
+
     public String encryptPassword (String plainPassword) {
         return passwordEncoder.encode(plainPassword);
     }

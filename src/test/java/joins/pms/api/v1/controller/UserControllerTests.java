@@ -128,7 +128,7 @@ public class UserControllerTests {
                 .andExpect(header().exists("Location"))
                 .andDo(print());
 
-        userDto = userService.findById(UUID.fromString(UserControllerTests.userId));
+        userDto = userService.find(UUID.fromString(UserControllerTests.userId));
         assert userDto.getId().equals(UUID.fromString(UserControllerTests.userId));
         assert userDto.getName().equals(modifiedName);
         assert userDto.getEmail().equals(modifiedEmail);
