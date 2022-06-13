@@ -30,10 +30,8 @@ public class UserControllerTests {
     ApiInvoker apiInvoker;
     @Autowired
     PasswordEncoder passwordEncoder;
-
     @Autowired
     ObjectMapper objectMapper;
-
     @Autowired
     UserService userService;
 
