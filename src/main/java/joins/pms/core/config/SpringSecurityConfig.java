@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 
 @Configuration
 @EnableWebSecurity
@@ -41,6 +42,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
         // H2 데이터베이스 콘솔에 접속하기 위해 예외를 처리한다.
         http.csrf().ignoringAntMatchers("/console/**").disable();
+
+        http.exceptionHandling().authenticationEntryPoint(new Http403ForbiddenEntryPoint());
     }
 
     @Override
