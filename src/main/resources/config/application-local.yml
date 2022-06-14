@@ -16,3 +16,7 @@ spring:
     console:
       enabled: true
       path: /console
+
+application:
+  session:
+    interval: 1

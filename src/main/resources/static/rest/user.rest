@@ -11,11 +11,23 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:9091/api/user/9856b6d6-e5e5-4b5a-8359-e68254aea126 HTTP/1.1
+GET http://localhost:9091/api/user/7620f723-7632-44b9-81a3-244c68e07c4f HTTP/1.1
 
 ###
 POST http://localhost:9091/api/signin HTTP/1.1
 Content-Type: application/json
+
+{
+  "email": "o.ohmry@gmail.com",
+  "password": "oohmry"
+}
+
+###
+GET http://localhost:9091/api/session HTTP/1.1
+
+###
+POST http://localhost:9091/api/login HTTP/1.1
+Content-Type: application/form-data
 
 {
   "email": "o.ohmry@gmail.com",
