@@ -1,4 +1,4 @@
-package joins.pms.api.v1.controller;
+package joins.pms.api.user.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import joins.pms.api.user.model.UserDto;

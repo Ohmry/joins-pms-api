@@ -14,6 +14,13 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * 사용자(User) 관련 서비스
+ *
+ * @see UserRepository
+ * @version 1.0
+ * @author Ohmry
+ */
 @Service
 public class UserService {
     private final UserRepository userRepository;

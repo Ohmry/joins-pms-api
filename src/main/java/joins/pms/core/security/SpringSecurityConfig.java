@@ -1,7 +1,6 @@
-package joins.pms.core.config;
+package joins.pms.core.security;
 
-import joins.pms.api.user.controller.SignController;
-import joins.pms.api.user.handler.SignHandler;
+import joins.pms.api.sign.handler.SignHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

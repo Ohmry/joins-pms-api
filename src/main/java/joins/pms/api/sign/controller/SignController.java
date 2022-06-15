@@ -1,8 +1,8 @@
-package joins.pms.api.user.controller;
+package joins.pms.api.sign.controller;
 
 import joins.pms.api.user.model.UserDto;
 import joins.pms.api.user.model.UserRole;
-import joins.pms.api.user.service.SignService;
+import joins.pms.api.sign.service.SignService;
 import joins.pms.core.api.ApiResponse;
 import joins.pms.core.api.ApiStatus;
 import org.springframework.http.MediaType;
@@ -44,7 +44,7 @@ public class SignController implements AuthenticationProvider {
                     .body(new ApiResponse(ApiStatus.IDENTIFY_NEEDS_EMPTY));
         }
         UUID id = signService.signup(userDto);
-        return ResponseEntity.created(new URI("/api/sigin")).build();
+        return ResponseEntity.created(new URI("/api/signin")).build();
     }
 
     @PostMapping("/signin/fail")
@@ -68,7 +68,7 @@ public class SignController implements AuthenticationProvider {
         String password = authentication.getCredentials().toString();
         UserDto userDto = signService.signin(email, password);
         List<GrantedAuthority> authroies = new ArrayList<>();
-        authroies.add(new SimpleGrantedAuthority("ROLE_" + UserRole.USER));
+        authroies.add(new SimpleGrantedAuthority("ROLE_" + userDto.getUserRole()));
         return new UsernamePasswordAuthenticationToken(userDto, null, authroies);
     }
 

@@ -1,4 +1,4 @@
-package joins.pms.api.user.service;
+package joins.pms.api.sign.service;
 
 import joins.pms.api.user.model.User;
 import joins.pms.api.user.model.UserDto;

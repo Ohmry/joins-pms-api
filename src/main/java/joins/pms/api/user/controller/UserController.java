@@ -14,12 +14,18 @@ import java.net.URISyntaxException;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * 사용자(User) 관련 컨트롤러
+ *
+ * @see UserService
+ * @version 1.0
+ * @author Ohmry
+ */
 @RestController
 @RequestMapping("/api")
 public class UserController {
     private final UserService userService;
     private final ModelConverter modelConverter;
-    private final String API_URL = "/user";
 
     public UserController (UserService userService,
                            ModelConverter modelConverter) {
@@ -27,7 +33,7 @@ public class UserController {
         this.modelConverter = modelConverter;
     }
 
-    @PostMapping(API_URL)
+    @PostMapping("/user")
     public ResponseEntity<ApiResponse> signup (@RequestBody UserDto userDto) throws URISyntaxException {
         if (userDto.getEmail().isEmpty() || userDto.getPassword().isEmpty()) {
             return ResponseEntity.badRequest()
@@ -39,9 +45,9 @@ public class UserController {
                     .body(new ApiResponse(ApiStatus.IDENTIFY_NEEDS_EMPTY));
         }
         UUID id = userService.save(userDto);
-        return ResponseEntity.created(new URI(API_URL + "/" + id)).build();
+        return ResponseEntity.created(new URI("/user/" + id)).build();
     }
-    @GetMapping(API_URL + "/{id}")
+    @GetMapping("/user/{id}")
     public ResponseEntity<ApiResponse> findById (@PathVariable UUID id) {
         UserDto userDto = userService.find(id);
         ApiResponse response;
@@ -57,7 +63,7 @@ public class UserController {
                 .body(response);
     }
 
-    @PutMapping(API_URL)
+    @PutMapping("/user")
     public ResponseEntity<ApiResponse> update (@RequestBody UserDto userDto) throws URISyntaxException {
         if (userDto.getId() == null) {
             return ResponseEntity.badRequest()
@@ -65,10 +71,10 @@ public class UserController {
                     .body(new ApiResponse(ApiStatus.IDENTIFY_NEEDS_NOT_EMPTY));
         }
         UUID id = userService.save(userDto);
-        return ResponseEntity.created(new URI(API_URL + "/" + id)).build();
+        return ResponseEntity.created(new URI("/user/" + id)).build();
     }
 
-    @DeleteMapping(API_URL)
+    @DeleteMapping("/user")
     public ResponseEntity<ApiResponse> leave (@RequestBody UserDto userDto) {
         if (userDto.getId() == null) {
             return ResponseEntity.badRequest()
