@@ -25,4 +25,7 @@ public class Schedule extends BaseEntity {
 
     @Column(name = "END_DE", length = 8)
     private String endDe;
+
+    @Column(name = "STATUS", length = 4)
+    private ScheduleStatus status;
 }

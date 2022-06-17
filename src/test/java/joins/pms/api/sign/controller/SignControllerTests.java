@@ -10,11 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.annotation.Rollback;
-import org.springframework.test.web.servlet.MvcResult;
 
+import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -42,7 +42,7 @@ public class SignControllerTests {
         String password = request.getString("password");
         apiInvoker.post("/api/signin", "email=" + email + "&password=" + password, MediaType.APPLICATION_FORM_URLENCODED)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data").value(email));
+                .andExpect(authenticated());
     }
 
     private JSONObject getUserInfo () {
@@ -50,7 +50,7 @@ public class SignControllerTests {
         jsonObject.put("email", "o.ohmry@gmail.com");
         jsonObject.put("password", "oohmry");
         jsonObject.put("name", "홍길동");
-        jsonObject.put("userRole", "ADMIN");
+        jsonObject.put("userRole", "USER");
         jsonObject.put("userStatus", "ACTIVATED");
         return jsonObject;
     }

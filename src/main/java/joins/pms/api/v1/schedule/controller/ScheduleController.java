@@ -1,6 +1,7 @@
 package joins.pms.api.v1.schedule.controller;
 
 import joins.pms.api.v1.schedule.model.ScheduleDto;
+import joins.pms.api.v1.schedule.model.ScheduleStatus;
 import joins.pms.api.v1.schedule.service.ScheduleService;
 import joins.pms.core.api.ApiResponse;
 import joins.pms.core.api.ApiStatus;
@@ -43,6 +44,7 @@ public class ScheduleController {
 
     @PostMapping("/" + API_NAME)
     public ResponseEntity<ApiResponse> save (@RequestBody ScheduleDto scheduleDto) throws URISyntaxException {
+        scheduleDto.setStatus(ScheduleStatus.READY);
         Long id = scheduleService.save(scheduleDto);
         URI uri = new URI("/schedule/" + id);
         return ResponseEntity.created(uri).build();

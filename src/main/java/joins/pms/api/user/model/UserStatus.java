@@ -2,7 +2,7 @@ package joins.pms.api.user.model;
 
 import joins.pms.core.model.converter.IEnumConverter;
 
-public enum UserStatus implements IEnumConverter {
+public enum UserStatus implements IEnumConverter<UserStatus> {
     ACTIVATED("ACTV"),
     LOCKED("LOCK")
     ;
@@ -13,9 +13,5 @@ public enum UserStatus implements IEnumConverter {
     @Override
     public String getValue() {
         return this.value;
-    }
-    @Override
-    public Enum getEnum(String value) {
-        return UserStatus.valueOf(value);
     }
 }
