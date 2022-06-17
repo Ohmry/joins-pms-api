@@ -33,20 +33,6 @@ public class UserController {
         this.modelConverter = modelConverter;
     }
 
-    @PostMapping("/user")
-    public ResponseEntity<ApiResponse> signup (@RequestBody UserDto userDto) throws URISyntaxException {
-        if (userDto.getEmail().isEmpty() || userDto.getPassword().isEmpty()) {
-            return ResponseEntity.badRequest()
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(new ApiResponse(ApiStatus.REQUIRED_PARAMETER_IS_NOT_FOUND));
-        } else if (userDto.getId() != null) {
-            return ResponseEntity.badRequest()
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(new ApiResponse(ApiStatus.IDENTIFY_NEEDS_EMPTY));
-        }
-        UUID id = userService.save(userDto);
-        return ResponseEntity.created(new URI("/user/" + id)).build();
-    }
     @GetMapping("/user/{id}")
     public ResponseEntity<ApiResponse> findById (@PathVariable UUID id) {
         UserDto userDto = userService.find(id);
@@ -54,7 +40,7 @@ public class UserController {
         if (userDto == null) {
             response = new ApiResponse(ApiStatus.DATA_IS_EMPTY, null);
         } else {
-            Map userMap = modelConverter.convert(userDto, Map.class);
+            Map<String, Object> userMap = modelConverter.convert(userDto, Map.class);
             userMap.remove("password");
             response = new ApiResponse(ApiStatus.SUCCESS, userMap);
         }

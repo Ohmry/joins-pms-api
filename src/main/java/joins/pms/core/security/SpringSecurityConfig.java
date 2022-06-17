@@ -33,14 +33,15 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 .antMatchers("/api/signin/**", "/api/signup").permitAll()
-                // /api/** API로 요청이 올 경우 모두 허용한다.
-                .antMatchers("/api/**").hasAnyRole("USER", "ADMIN")
                 // H2 콘솔을 열기 위해서 /console/** 요청도 모두 허용한다.
                 .antMatchers("/console/**/**").permitAll()
+                // /api/** API로 요청이 올 경우 모두 허용한다.
+                .antMatchers("/api/**").hasAnyRole("USER", "ADMIN")
                 .anyRequest().denyAll();
 
         // H2 데이터베이스 콘솔에 접속하기 위해 예외를 처리한다.
-        http.csrf().ignoringAntMatchers("/console/**").disable();
+        http.csrf().ignoringAntMatchers("/console/**/**").disable();
+        http.headers().frameOptions().sameOrigin();
 
         http.exceptionHandling().authenticationEntryPoint(new Http403ForbiddenEntryPoint());
     }

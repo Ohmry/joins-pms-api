@@ -9,9 +9,12 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.test.web.servlet.MvcResult;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -24,23 +27,31 @@ public class SignControllerTests {
     @Test
     @Order(1)
     public void 사용자_가입 () throws Exception {
+        JSONObject request = this.getUserInfo();
+        apiInvoker.post("/api/signup", request.toString())
+                .andExpect(status().isCreated())
+                .andExpect(header().string("Location", "/api/signin"))
+                .andDo(print());
+    }
+
+    @Test
+    @Order(2)
+    public void 사용자_로그인 () throws Exception {
+        JSONObject request = this.getUserInfo();
+        String email = request.getString("email");
+        String password = request.getString("password");
+        apiInvoker.post("/api/signin", "email=" + email + "&password=" + password, MediaType.APPLICATION_FORM_URLENCODED)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data").value(email));
+    }
+
+    private JSONObject getUserInfo () {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("email", "o.ohmry@gmail.com");
         jsonObject.put("password", "oohmry");
         jsonObject.put("name", "홍길동");
         jsonObject.put("userRole", "ADMIN");
         jsonObject.put("userStatus", "ACTIVATED");
-
-        apiInvoker.post("/api/signup", jsonObject.toString())
-                .andExpect(status().isCreated())
-                .andExpect(header().string("Location", "/api/signin"));
+        return jsonObject;
     }
-
-    @Test
-    @Order(2)
-    public void 사용자_로그인 () throws Exception {
-        apiInvoker.post("/api/signin", "email=o.ohmry@gmail.com&password=oohmry")
-                .andExpect(status().isOk());
-    }
-
 }

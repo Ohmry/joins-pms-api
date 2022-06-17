@@ -5,6 +5,7 @@ import joins.pms.api.user.model.UserRole;
 import joins.pms.api.sign.service.SignService;
 import joins.pms.core.api.ApiResponse;
 import joins.pms.core.api.ApiStatus;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -16,10 +17,12 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.UUID;
 
@@ -55,7 +58,8 @@ public class SignController implements AuthenticationProvider {
     }
 
     @PostMapping("/signin/success")
-    public ResponseEntity<ApiResponse> success (HttpServletRequest httpServletRequest) {
+    public ResponseEntity<ApiResponse> success (HttpServletRequest httpServletRequest,
+                                                HttpServletResponse httpServletResponse) {
         HttpSession httpSession = httpServletRequest.getSession();
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_JSON)

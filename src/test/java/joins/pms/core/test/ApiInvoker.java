@@ -27,6 +27,11 @@ public class ApiInvoker {
                 .content(body).contentType(MediaType.APPLICATION_JSON));
     }
 
+    public ResultActions post (@NotNull String url, String body, MediaType mediaType) throws Exception {
+        return mockMvc.perform(RestDocumentationRequestBuilders.post(url)
+                .content(body).contentType(mediaType));
+    }
+
     public ResultActions put (@NotNull String url, String body) throws Exception {
         return mockMvc.perform(RestDocumentationRequestBuilders.put(url)
                 .content(body).contentType(MediaType.APPLICATION_JSON));
