@@ -10,6 +10,7 @@ import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MvcResult;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -26,6 +27,7 @@ public class ScheduleControllerTests {
     private final String API_URL = "/api/v1/schedule";
 
     @Test
+    @WithMockUser(roles = "USER")
     @Order(1)
     void 비어있는_DB에서_스케줄_조회 () throws Exception {
         apiInvoker.get(API_URL)
@@ -38,6 +40,7 @@ public class ScheduleControllerTests {
     }
 
     @Test
+    @WithMockUser(roles = "USER")
     @Order(2)
     void 새로운_스케줄_정보_생성 () throws Exception {
         JSONObject jsonObject = new JSONObject();
@@ -70,6 +73,7 @@ public class ScheduleControllerTests {
     }
 
     @Test
+    @WithMockUser(roles = "USER")
     @Order(3)
     void 스케줄이_생성된_이후_조회 () throws Exception {
         apiInvoker.get(API_URL)
@@ -82,6 +86,7 @@ public class ScheduleControllerTests {
     }
 
     @Test
+    @WithMockUser(roles = "USER")
     @Order(4)
     void 스케줄_정보_수정 () throws Exception {
         JSONObject jsonObject = new JSONObject();
@@ -114,6 +119,7 @@ public class ScheduleControllerTests {
     }
 
     @Test
+    @WithMockUser(roles = "USER")
     @Order(5)
     void 스케줄_삭제 () throws Exception {
         apiInvoker.delete(API_URL + "/1")

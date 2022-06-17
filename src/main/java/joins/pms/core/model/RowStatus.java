@@ -2,7 +2,7 @@ package joins.pms.core.model;
 
 import joins.pms.core.model.converter.IEnumConverter;
 
-public enum RowStatus implements IEnumConverter {
+public enum RowStatus implements IEnumConverter<RowStatus> {
     NORMAL("A"),
     DELETED("D")
     ;
@@ -13,9 +13,5 @@ public enum RowStatus implements IEnumConverter {
     @Override
     public String getValue() {
         return this.value;
-    }
-    @Override
-    public Enum getEnum (String value) {
-        return RowStatus.valueOf(value);
     }
 }

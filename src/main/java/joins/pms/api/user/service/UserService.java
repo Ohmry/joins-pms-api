@@ -40,6 +40,11 @@ public class UserService {
         return found.map(user -> modelConverter.convert(user, UserDto.class)).orElse(null);
     }
 
+    public UserDto findByEmail (String email) {
+        Optional<User> found = userRepository.findByEmail(email);
+        return found.map(user -> modelConverter.convert(user, UserDto.class)).orElse(null);
+    }
+
     @Transactional
     public UUID save (UserDto userDto) {
         String encryptedPassword = passwordEncoder.encode(userDto.getPassword());

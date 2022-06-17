@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.nio.charset.StandardCharsets;
@@ -25,6 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class UserControllerTests {
     @Autowired
     ApiInvoker apiInvoker;
@@ -39,7 +41,7 @@ public class UserControllerTests {
     private final String API_SIGNIN = "/api/signin";
     private final String API_SIGNOUT = "/api/signout";
 
-    private static String userId = "";
+    private static UUID userId = null;
 
     private JSONObject getDefaultUserMap () throws JSONException {
         JSONObject jsonObject = new JSONObject();
@@ -51,34 +53,26 @@ public class UserControllerTests {
         return jsonObject;
     }
 
-    @Test
-    @Order(1)
+    @BeforeAll
     public void 사용자_생성 () throws Exception {
         JSONObject userInfo = this.getDefaultUserMap();
-        MvcResult result = apiInvoker.post(API_URL, this.getDefaultUserMap().toString())
-                .andExpect(status().isCreated())
-                .andExpect(header().exists("Location"))
-                .andDo(print())
-                .andReturn();
-        String uri = result.getResponse().getHeader("Location");
-        assert uri != null;
-        String userId = uri.substring(6);
-        UserControllerTests.userId = userId;
-        apiInvoker.get(API_URL + "/" + userId)
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.code").value(ApiStatus.SUCCESS.getCode()))
-                .andExpect(jsonPath("$.message").value(ApiStatus.SUCCESS.getMessage()))
-                .andExpect(jsonPath("$.count").value(1))
-                .andExpect(jsonPath("$.data.id").value(userId))
-                .andExpect(jsonPath("$.data.name").value(userInfo.get("name")))
-                .andExpect(jsonPath("$.data.email").value(userInfo.get("email")))
-                .andExpect(jsonPath("$.data.password").doesNotExist())
-                .andExpect(jsonPath("$.data.userRole").value(userInfo.get("userRole")))
-                .andExpect(jsonPath("$.data.userStatus").value(userInfo.get("userStatus")))
-                .andDo(print());
+        UserDto userDto = userService.findByEmail(userInfo.getString("email"));
+
+        if (userDto == null) {
+            apiInvoker.post("/api/signup", this.getDefaultUserMap().toString())
+                    .andExpect(status().isCreated())
+                    .andExpect(header().exists("Location"));
+            userDto = userService.findByEmail(userInfo.getString("email"));
+            Assertions.assertNotNull(userDto);
+        } else {
+            UserControllerTests.userId = userDto.getId();
+        }
+        UserControllerTests.userId = userDto.getId();
     }
+
     @Test
-    @Order(2)
+    @WithMockUser(roles = "USER")
+    @Order(1)
     public void 사용자_조회 () throws Exception {
         JSONObject userInfo = this.getDefaultUserMap();
         apiInvoker.get(API_URL + "/" + UserControllerTests.userId)
@@ -86,7 +80,7 @@ public class UserControllerTests {
                 .andExpect(jsonPath("$.code").value(ApiStatus.SUCCESS.getCode()))
                 .andExpect(jsonPath("$.message").value(ApiStatus.SUCCESS.getMessage()))
                 .andExpect(jsonPath("$.count").value(1))
-                .andExpect(jsonPath("$.data.id").value(UserControllerTests.userId))
+                .andExpect(jsonPath("$.data.id").value(UserControllerTests.userId.toString()))
                 .andExpect(jsonPath("$.data.name").value(userInfo.get("name")))
                 .andExpect(jsonPath("$.data.email").value(userInfo.get("email")))
                 .andExpect(jsonPath("$.data.password").doesNotExist())
@@ -95,14 +89,15 @@ public class UserControllerTests {
                 .andDo(print());
     }
     @Test
-    @Order(3)
+    @WithMockUser(roles = "USER")
+    @Order(2)
     public void 사용자_정보_수정 () throws Exception {
         MvcResult result = apiInvoker.get(API_URL + "/" + UserControllerTests.userId)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.code").value(ApiStatus.SUCCESS.getCode()))
                 .andExpect(jsonPath("$.message").value(ApiStatus.SUCCESS.getMessage()))
                 .andExpect(jsonPath("$.count").value(1))
-                .andExpect(jsonPath("$.data.id").value(UserControllerTests.userId))
+                .andExpect(jsonPath("$.data.id").value(UserControllerTests.userId.toString()))
                 .andReturn();
         JSONObject jsonObject = new JSONObject(result.getResponse().getContentAsString(StandardCharsets.UTF_8));
         JSONObject data = jsonObject.getJSONObject("data");
@@ -126,8 +121,8 @@ public class UserControllerTests {
                 .andExpect(header().exists("Location"))
                 .andDo(print());
 
-        userDto = userService.find(UUID.fromString(UserControllerTests.userId));
-        assert userDto.getId().equals(UUID.fromString(UserControllerTests.userId));
+        userDto = userService.find(UserControllerTests.userId);
+        assert userDto.getId().equals(UserControllerTests.userId);
         assert userDto.getName().equals(modifiedName);
         assert userDto.getEmail().equals(modifiedEmail);
         assert passwordEncoder.matches(modifiedPassword, userDto.getPassword());
@@ -136,7 +131,8 @@ public class UserControllerTests {
     }
 
     @Test
-    @Order(4)
+    @WithMockUser(roles = "USER")
+    @Order(3)
     public void 사용자_탈퇴 () throws Exception {
         JSONObject userInfo = this.getDefaultUserMap();
         userInfo.put("id", UserControllerTests.userId);
