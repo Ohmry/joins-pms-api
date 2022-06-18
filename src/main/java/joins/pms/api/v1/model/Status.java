@@ -1,10 +1,8 @@
-package joins.pms.api.v1.schedule.model;
+package joins.pms.api.v1.model;
 
 import joins.pms.core.model.converter.IEnumConverter;
 
-import java.util.EnumSet;
-
-public enum ScheduleStatus implements IEnumConverter {
+public enum Status implements IEnumConverter {
     READY("RDY"),
     PROCEED("PRD"),
     ABORT("ABT"),
@@ -13,7 +11,7 @@ public enum ScheduleStatus implements IEnumConverter {
 
     private final String value;
 
-    ScheduleStatus (String value) {
+    Status(String value) {
         this.value = value;
     }
 

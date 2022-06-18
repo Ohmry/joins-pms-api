@@ -1,5 +1,6 @@
 package joins.pms.api.v1.schedule.model;
 
+import joins.pms.api.v1.model.Status;
 import joins.pms.core.model.BaseDto;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -12,6 +13,6 @@ public class ScheduleDto extends BaseDto {
     private String description;
     private String startDe;
     private String endDe;
-    private ScheduleStatus status;
+    private Status status;
     private Integer progress;
 }

@@ -2,11 +2,10 @@ package joins.pms.core.model;
 
 import joins.pms.api.v1.schedule.model.Schedule;
 import joins.pms.api.v1.schedule.model.ScheduleDto;
-import joins.pms.api.v1.schedule.model.ScheduleStatus;
+import joins.pms.api.v1.model.Status;
 import joins.pms.core.model.converter.ModelConverter;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
 import java.util.Map;
 
 public class ModelConverterTest {
@@ -17,7 +16,7 @@ public class ModelConverterTest {
         ScheduleDto scheduleDto = new ScheduleDto();
         scheduleDto.setName("테스트");
         scheduleDto.setDescription("모델 변환 테스트");
-        scheduleDto.setStatus(ScheduleStatus.READY);
+        scheduleDto.setStatus(Status.READY);
         Schedule entity = modelConverter.convert(scheduleDto, Schedule.class);
         System.out.println(entity);
         // Entity -> Dto

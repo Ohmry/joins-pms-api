@@ -1,4 +1,20 @@
 package joins.pms.api.v1.tag.model;
 
-public class Tag {
+import joins.pms.core.model.BaseEntity;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+import javax.persistence.*;
+
+@Data
+@Entity
+@EqualsAndHashCode(callSuper = false)
+public class Tag extends BaseEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "TAG_ID", nullable = false)
+    private Long id;
+
+    @Column(name = "TAG_NM")
+    private String name;
 }

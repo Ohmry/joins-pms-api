@@ -1,5 +1,6 @@
 package joins.pms.api.v1.schedule.model;
 
+import joins.pms.api.v1.model.Status;
 import joins.pms.api.v1.tag.model.Tag;
 import joins.pms.core.model.BaseEntity;
 import lombok.*;
@@ -29,10 +30,11 @@ public class Schedule extends BaseEntity {
     private String endDe;
 
     @Column(name = "STATUS", length = 4)
-    private ScheduleStatus status;
+    private Status status;
 
     @Column(name = "PROGRESS")
     private Integer progrees;
 
+    @OneToMany(targetEntity = Tag.class, fetch = FetchType.LAZY)
     private Set<Tag> tags;
 }
