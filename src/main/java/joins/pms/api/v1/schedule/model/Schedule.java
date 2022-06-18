@@ -1,9 +1,11 @@
 package joins.pms.api.v1.schedule.model;
 
+import joins.pms.api.v1.tag.model.Tag;
 import joins.pms.core.model.BaseEntity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Data
 @Entity
@@ -28,4 +30,9 @@ public class Schedule extends BaseEntity {
 
     @Column(name = "STATUS", length = 4)
     private ScheduleStatus status;
+
+    @Column(name = "PROGRESS")
+    private Integer progrees;
+
+    private Set<Tag> tags;
 }

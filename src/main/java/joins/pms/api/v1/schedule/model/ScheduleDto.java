@@ -13,4 +13,5 @@ public class ScheduleDto extends BaseDto {
     private String startDe;
     private String endDe;
     private ScheduleStatus status;
+    private Integer progress;
 }
