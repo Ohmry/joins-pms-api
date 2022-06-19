@@ -1,4 +1,4 @@
-package joins.pms.api.v1.model;
+package joins.pms.api.v1.common.model;
 
 import joins.pms.core.model.converter.IEnumConverter;
 

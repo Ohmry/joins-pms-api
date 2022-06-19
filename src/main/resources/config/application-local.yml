@@ -17,6 +17,10 @@ spring:
       enabled: true
       path: /console
 
+logging:
+  level:
+    org.hibernate: trace
+
 application:
   session:
     interval: 1

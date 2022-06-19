@@ -2,7 +2,7 @@ package joins.pms.core.model;
 
 import joins.pms.api.v1.schedule.model.Schedule;
 import joins.pms.api.v1.schedule.model.ScheduleDto;
-import joins.pms.api.v1.model.Status;
+import joins.pms.api.v1.common.model.Status;
 import joins.pms.core.model.converter.ModelConverter;
 import org.junit.jupiter.api.Test;
 

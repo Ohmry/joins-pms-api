@@ -1,7 +1,7 @@
 package joins.pms.api.v1.task.model;
 
-import joins.pms.api.user.model.User;
-import joins.pms.api.v1.model.Status;
+import joins.pms.api.v1.common.model.Status;
+import joins.pms.api.v1.schedule.model.Schedule;
 import joins.pms.api.v1.tag.model.Tag;
 import joins.pms.core.model.BaseEntity;
 import lombok.Data;
@@ -34,18 +34,10 @@ public class Task extends BaseEntity {
     @Column(name = "PROGRESS")
     private Integer progress;
 
-    @OneToOne(targetEntity = User.class, fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "TASK_USER",
-            joinColumns = @JoinColumn(name = "TASK_ID"),
-            inverseJoinColumns = @JoinColumn(name = "USR_ID"))
-    private User owner;
-
-    @OneToMany(targetEntity = User.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "USR_ID")
-    private Set<User> manager;
+    @ManyToOne(targetEntity = Schedule.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "SCHDL_ID")
+    private Schedule schedule;
 
     @OneToMany(targetEntity = Tag.class, fetch = FetchType.LAZY)
     private Set<Tag> tags;
-
 }

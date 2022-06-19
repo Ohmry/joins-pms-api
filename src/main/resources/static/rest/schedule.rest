@@ -10,7 +10,19 @@ Content-Type: application/json
   "name": "스케줄 생성 테스트",
   "description": "테스트용 스케줄 정보",
   "startDe": "20220606",
-  "endDe": "20220606"
+  "endDe": "20220606",
+  "status": "READY",
+  "progress": 0,
+  "tags": [
+    {
+      "id": null,
+      "name": "태그1"
+    },
+    {
+      "id": null,
+      "name": "태그2"
+    }
+  ]
 }
 
 ###
