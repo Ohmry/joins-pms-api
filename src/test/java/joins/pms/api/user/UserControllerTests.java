@@ -50,7 +50,7 @@ public class UserControllerTests {
     @BeforeAll
     public void 사용자_생성 () throws Exception {
         JSONObject userInfo = this.getDefaultUserMap();
-        UserInfoDto userInfoDto = userService.findByEmail(userInfo.getString("email"));
+        UserInfo userInfoDto = userService.findByEmail(userInfo.getString("email"));
 
         if (userInfoDto == null) {
             apiInvoker.post("/api/signup", this.getDefaultUserMap().toString())

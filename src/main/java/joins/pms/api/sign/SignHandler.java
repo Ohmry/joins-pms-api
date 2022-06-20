@@ -28,11 +28,11 @@ public class SignHandler implements AuthenticationSuccessHandler, Authentication
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        SigninDto signinDto = (SigninDto) authentication.getPrincipal();
+        SigninResponse signinResponse = (SigninResponse) authentication.getPrincipal();
         HttpSession httpSession = request.getSession();
-        httpSession.setAttribute("email", signinDto.getEmail());
-        httpSession.setAttribute("name", signinDto.getName());
-        httpSession.setAttribute("role", signinDto.getRole());
+        httpSession.setAttribute("email", signinResponse.getEmail());
+        httpSession.setAttribute("name", signinResponse.getName());
+        httpSession.setAttribute("role", signinResponse.getRole());
         httpSession.setMaxInactiveInterval(60 * SESSION_INTERVAL);
         request.getRequestDispatcher("signin/success").forward(request, response);
     }

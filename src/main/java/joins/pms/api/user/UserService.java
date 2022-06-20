@@ -27,23 +27,23 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public UserInfoDto find (UUID id) {
+    public UserInfo find (UUID id) {
         Optional<User> found = userRepository.findByIdAndRowStatus(id, RowStatus.NORMAL);
-        return found.map(UserInfoDto::new).orElse(null);
+        return found.map(UserInfo::new).orElse(null);
     }
 
-    public UserInfoDto findByEmail (String email) {
+    public UserInfo findByEmail (String email) {
         Optional<User> found = userRepository.findByEmail(email);
-        return found.map(UserInfoDto::new).orElse(null);
+        return found.map(UserInfo::new).orElse(null);
     }
 
     @Transactional
-    public String update (UUID id, UserUpdateDto userUpdateDto) {
+    public String update (UUID id, UserUpdateRequest userUpdateRequest) {
         Optional<User> found = userRepository.findById(id);
         UserDto userDto = found.map(UserDto::new).orElseThrow(() -> new EntityNotFoundException(id.toString()));
-        userDto.setName(userUpdateDto.getName());
-        userDto.setRole(userUpdateDto.getRole());
-        userDto.setStatus(userUpdateDto.getStatus());
+        userDto.setName(userUpdateRequest.getName());
+        userDto.setRole(userUpdateRequest.getRole());
+        userDto.setStatus(userUpdateRequest.getStatus());
         User user = userRepository.save(userDto.toEntity());
         return user.getId().toString();
     }

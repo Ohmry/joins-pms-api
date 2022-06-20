@@ -32,12 +32,12 @@ public class UserController {
 
     @GetMapping("/user/{id}")
     public ResponseEntity<ApiResponse> findById (@PathVariable UUID id) {
-        UserInfoDto userInfoDto = userService.find(id);
+        UserInfo userInfo = userService.find(id);
         ApiResponse response;
-        if (userInfoDto == null) {
+        if (userInfo == null) {
             response = new ApiResponse(ApiStatus.DATA_IS_EMPTY, null);
         } else {
-            response = new ApiResponse(ApiStatus.SUCCESS, userInfoDto);
+            response = new ApiResponse(ApiStatus.SUCCESS, userInfo);
         }
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_JSON)
@@ -45,7 +45,7 @@ public class UserController {
     }
 
     @PutMapping("/user/{id}")
-    public ResponseEntity<ApiResponse> update (HttpServletRequest request, @PathVariable UUID id, @RequestBody UserUpdateDto userUpdateDto) throws URISyntaxException {
+    public ResponseEntity<ApiResponse> update (HttpServletRequest request, @PathVariable UUID id, @RequestBody UserUpdateRequest userUpdateRequest) throws URISyntaxException {
         HttpSession httpSession = request.getSession();
         String sessionUserId = httpSession.getAttribute("id").toString();
 
@@ -55,14 +55,14 @@ public class UserController {
                     .body(new ApiResponse(ApiStatus.ABNORMAL_ACCESS));
         }
 
-        if (!StringUtils.hasText(userUpdateDto.getName()) || !StringUtils.hasText(userUpdateDto.getEmail())) {
+        if (!StringUtils.hasText(userUpdateRequest.getName()) || !StringUtils.hasText(userUpdateRequest.getEmail())) {
             return ResponseEntity.badRequest()
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(new ApiResponse(ApiStatus.IDENTIFY_NEEDS_NOT_EMPTY));
         }
 
         try {
-            String userId = userService.update(id, userUpdateDto);
+            String userId = userService.update(id, userUpdateRequest);
             return ResponseEntity.created(new URI("/user/" + userId)).build();
         } catch (EntityNotFoundException e) {
             return ResponseEntity.notFound().build();

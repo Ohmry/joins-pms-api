@@ -25,7 +25,7 @@ public class SignService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public SigninDto signin (String email, String password) {
+    public SigninResponse signin (String email, String password) {
         Optional<User> credential = userRepository.findByEmail(email);
         if (!credential.isPresent()) {
             throw new UsernameNotFoundException(email);
@@ -34,21 +34,21 @@ public class SignService {
         if (!passwordEncoder.matches(password, user.getPassword())) {
             throw new BadCredentialsException(email);
         }
-        return new SigninDto(user);
+        return new SigninResponse(user);
     }
 
     @Transactional
-    public UUID signup (SignupDto signupDto) {
-        String encryptedPassword = passwordEncoder.encode(signupDto.getPassword());
-        signupDto.setPassword(encryptedPassword);
-        if (signupDto.getRole() == null) {
-            signupDto.setRole(UserRole.USER);
+    public UUID signup (SignupRequest signupRequest) {
+        String encryptedPassword = passwordEncoder.encode(signupRequest.getPassword());
+        signupRequest.setPassword(encryptedPassword);
+        if (signupRequest.getRole() == null) {
+            signupRequest.setRole(UserRole.USER);
         }
-        if (signupDto.getStatus() == null) {
-            signupDto.setStatus(UserStatus.ACTIVE);
+        if (signupRequest.getStatus() == null) {
+            signupRequest.setStatus(UserStatus.ACTIVE);
         }
-        signupDto.setRowStatus(RowStatus.NORMAL);
-        User user = userRepository.save(signupDto.toEntity());
+        signupRequest.setRowStatus(RowStatus.NORMAL);
+        User user = userRepository.save(signupRequest.toEntity());
         return user.getId();
     }
 }

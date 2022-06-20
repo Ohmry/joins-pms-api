@@ -33,13 +33,13 @@ public class SignController implements AuthenticationProvider {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<ApiResponse> signup (@RequestBody SignupDto signupDto) throws URISyntaxException {
-        if (signupDto.getEmail().isEmpty() || signupDto.getPassword().isEmpty()) {
+    public ResponseEntity<ApiResponse> signup (@RequestBody SignupRequest signupRequest) throws URISyntaxException {
+        if (signupRequest.getEmail().isEmpty() || signupRequest.getPassword().isEmpty()) {
             return ResponseEntity.badRequest()
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(new ApiResponse(ApiStatus.REQUIRED_PARAMETER_IS_NOT_FOUND));
         }
-        UUID id = signService.signup(signupDto);
+        UUID id = signService.signup(signupRequest);
         return ResponseEntity.created(new URI("/api/signin")).build();
     }
 
@@ -62,10 +62,10 @@ public class SignController implements AuthenticationProvider {
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String email = authentication.getName();
         String password = authentication.getCredentials().toString();
-        SigninDto signinDto = signService.signin(email, password);
+        SigninResponse signinResponse = signService.signin(email, password);
         List<GrantedAuthority> authroies = new ArrayList<>();
-        authroies.add(new SimpleGrantedAuthority("ROLE_" + signinDto.getRole()));
-        return new UsernamePasswordAuthenticationToken(signinDto, null, authroies);
+        authroies.add(new SimpleGrantedAuthority("ROLE_" + signinResponse.getRole()));
+        return new UsernamePasswordAuthenticationToken(signinResponse, null, authroies);
     }
 
     @Override

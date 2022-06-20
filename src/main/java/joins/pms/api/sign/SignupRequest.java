@@ -3,11 +3,13 @@ package joins.pms.api.sign;
 import joins.pms.api.user.User;
 import joins.pms.api.user.UserRole;
 import joins.pms.api.user.UserStatus;
+import joins.pms.core.DataTransferObject;
 import joins.pms.core.RowStatus;
 import lombok.Data;
 
 @Data
-public class SignupDto {
+@DataTransferObject
+public class SignupRequest {
     private String email;
     private String password;
     private String name;
