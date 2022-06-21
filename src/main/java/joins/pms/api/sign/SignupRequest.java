@@ -18,13 +18,6 @@ public class SignupRequest {
     private RowStatus rowStatus;
 
     public User toEntity () {
-        return User.builder()
-                .email(this.email)
-                .password(this.password)
-                .name(this.name)
-                .role(this.role)
-                .status(this.status)
-                .rowStatus(this.rowStatus)
-                .build();
+        return new User(null, email, password, name, role, status, rowStatus, null, null);
     }
 }

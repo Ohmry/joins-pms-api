@@ -38,21 +38,27 @@ public class UserService {
     }
 
     @Transactional
-    public String update (UUID id, UserUpdateRequest userUpdateRequest) {
+    public String update (UUID id, UserUpdateRequest request) {
         Optional<User> found = userRepository.findById(id);
-        UserDto userDto = found.map(UserDto::new).orElseThrow(() -> new EntityNotFoundException(id.toString()));
-        userDto.setName(userUpdateRequest.getName());
-        userDto.setRole(userUpdateRequest.getRole());
-        userDto.setStatus(userUpdateRequest.getStatus());
-        User user = userRepository.save(userDto.toEntity());
+        if (!found.isPresent()) {
+            throw new EntityNotFoundException(id.toString());
+        } else {
+            User user = found.get();
+            user.updateInfo(request.getName(), request.getRole(), request.getStatus());
+            user = userRepository.save(user);
+        }
         return user.getId().toString();
     }
 
     @Transactional
     public void delete (UUID id) {
         Optional<User> found = userRepository.findById(id);
-        UserDto userDto = found.map(UserDto::new).orElseThrow(() -> new EntityNotFoundException(id.toString()));
-        userDto.setRowStatus(RowStatus.DELETED);
-        userRepository.save(userDto.toEntity());
+        if (!found.isPresent()) {
+            throw new EntityNotFoundException(id.toString());
+        } else {
+            User user = found.get();
+            user.setDeleted();
+            userRepository.save(user);
+        }
     }
 }

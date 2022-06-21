@@ -22,9 +22,9 @@ public class ScheduleService {
         return list.stream().map(ScheduleDto::new).collect(Collectors.toList());
     }
 
-    public ScheduleDto findById (Long id) {
+    public ScheduleInfo findById (Long id) {
         Optional<Schedule> schedule = scheduleRepository.findByIdAndRowStatus(id, RowStatus.NORMAL);
-        return schedule.map(ScheduleDto::new).orElse(null);
+        return schedule.map(ScheduleInfo::new).orElse(null);
     }
 
     public Long save (ScheduleDto scheduleDto) {
