@@ -21,9 +21,23 @@ public abstract class BaseEntity {
     @Column(name = "UPDATED_DT")
     public LocalDateTime updatedTime;
 
+    public BaseEntity () {
+        this.rowStatus = RowStatus.NORMAL;
+        this.createdTime = LocalDateTime.now();
+        this.updatedTime = LocalDateTime.now();
+    }
+
     public BaseEntity (RowStatus rowStatus, LocalDateTime createdTime, LocalDateTime updatedTime) {
         this.rowStatus = rowStatus;
         this.createdTime = createdTime;
         this.updatedTime = updatedTime;
+    }
+
+    public RowStatus getRowStatus() {
+        return rowStatus;
+    }
+
+    public void setRowStatus(RowStatus rowStatus) {
+        this.rowStatus = rowStatus;
     }
 }

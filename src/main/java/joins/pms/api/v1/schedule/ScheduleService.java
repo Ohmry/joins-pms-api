@@ -17,9 +17,9 @@ public class ScheduleService {
         this.scheduleRepository = scheduleRepository;
     }
 
-    public List<ScheduleDto> findAll () {
+    public List<ScheduleInfo> findAll () {
         List<Schedule> list = scheduleRepository.findAllByRowStatus(RowStatus.NORMAL);
-        return list.stream().map(ScheduleDto::new).collect(Collectors.toList());
+        return list.stream().map(ScheduleInfo::new).collect(Collectors.toList());
     }
 
     public ScheduleInfo findById (Long id) {

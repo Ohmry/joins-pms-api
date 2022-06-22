@@ -13,7 +13,6 @@ public class TagService {
     }
 
     public TagDto save (TagDto tagDto) {
-        Optional<Tag> found = tagRepository.findByName(tagDto.getName());
-        return found.map(TagDto::new).orElse(tagDto);
+        return null;
     }
 }

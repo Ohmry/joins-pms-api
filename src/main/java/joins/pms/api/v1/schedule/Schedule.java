@@ -43,6 +43,17 @@ public class Schedule extends BaseEntity {
         this.progress = progress;
     }
 
+    public Schedule (Long id, String name, String description, String startDe, String endDe, Progress progress, RowStatus rowStatus) {
+        super();
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.startDe = startDe;
+        this.endDe = endDe;
+        this.progress = progress;
+        this.rowStatus = rowStatus;
+    }
+
     public Long getId() {
         return id;
     }

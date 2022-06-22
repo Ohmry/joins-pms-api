@@ -22,7 +22,7 @@ public class ScheduleController {
 
     @GetMapping("/" + API_NAME)
     public ResponseEntity<ApiResponse> findAll () {
-        List<ScheduleDto> list = scheduleService.findAll();
+        List<ScheduleInfo> list = scheduleService.findAll();
         ApiResponse response = new ApiResponse(list.isEmpty() ? ApiStatus.DATA_IS_EMPTY : ApiStatus.SUCCESS, list);
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_JSON)
@@ -31,8 +31,8 @@ public class ScheduleController {
 
     @GetMapping("/"+ API_NAME + "/{id}")
     public ResponseEntity<ApiResponse> find (@PathVariable Long id) {
-        ScheduleDto scheduleDto = scheduleService.findById(id);
-        ApiResponse response = new ApiResponse(scheduleDto == null ? ApiStatus.DATA_IS_EMPTY : ApiStatus.SUCCESS, scheduleDto);
+        ScheduleInfo scheduleInfo = scheduleService.findById(id);
+        ApiResponse response = new ApiResponse(scheduleInfo == null ? ApiStatus.DATA_IS_EMPTY : ApiStatus.SUCCESS, scheduleInfo);
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(response);

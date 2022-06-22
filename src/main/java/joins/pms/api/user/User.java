@@ -66,13 +66,27 @@ public class User extends BaseEntity {
         return status;
     }
 
-    public void updateInfo (String name, UserRole role, UserStatus status) {
-        this.name = name;
-        this.role = role;
-        this.status = status;
+    public void setId(UUID id) {
+        this.id = id;
     }
 
-    public void setDeleted () {
-        this.rowStatus = RowStatus.DELETED;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setRole(UserRole role) {
+        this.role = role;
+    }
+
+    public void setStatus(UserStatus status) {
+        this.status = status;
     }
 }

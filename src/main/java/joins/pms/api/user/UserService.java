@@ -44,10 +44,12 @@ public class UserService {
             throw new EntityNotFoundException(id.toString());
         } else {
             User user = found.get();
-            user.updateInfo(request.getName(), request.getRole(), request.getStatus());
+            user.setName(request.getName());
+            user.setRole(request.getRole());
+            user.setStatus(request.getStatus());
             user = userRepository.save(user);
+            return user.getId().toString();
         }
-        return user.getId().toString();
     }
 
     @Transactional
@@ -57,7 +59,7 @@ public class UserService {
             throw new EntityNotFoundException(id.toString());
         } else {
             User user = found.get();
-            user.setDeleted();
+            user.setRowStatus(RowStatus.DELETED);
             userRepository.save(user);
         }
     }
