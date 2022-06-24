@@ -19,7 +19,7 @@ spring:
 
 logging:
   level:
-    org.hibernate: trace
+    org.hibernate: info
 
 application:
   session:
