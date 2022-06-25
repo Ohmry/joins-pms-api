@@ -1,4 +1,4 @@
-package joins.pms.http;
+package joins.pms.core.http;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;

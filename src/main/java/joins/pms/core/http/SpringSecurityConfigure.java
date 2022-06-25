@@ -1,4 +1,4 @@
-package joins.pms.http;
+package joins.pms.core.http;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

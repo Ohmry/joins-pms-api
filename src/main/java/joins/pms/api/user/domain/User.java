@@ -1,78 +1,54 @@
 package joins.pms.api.user.domain;
 
-import joins.pms.annotations.DomainLayer;
-import joins.pms.domain.BaseEntity;
-import joins.pms.core.PasswordFactory;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import joins.pms.core.domain.BaseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 
 import javax.persistence.*;
 
-@DomainLayer
 @Entity
 public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(length = 100, nullable = false, unique = true)
-    private String email;
-    @Column
-    private String password;
+    @Embedded
+    private UserCredential credential;
     @Column(length = 50)
     private String name;
 
-    @Transient
-    private boolean isCreated;
-    @Transient
-    private boolean isUpdated;
+    protected User() {
+        super();
+    }
 
-    public static User create (SignupRequest signupRequest) {
+    public static User create(String email, String password, String name){
         User user = new User();
-        user.id = null;
-        user.email = signupRequest.email;
-        PasswordEncoder encoder = PasswordFactory.getInstance();
-        user.password = encoder.encode(signupRequest.password);
-        user.name = signupRequest.name;
-        user.isCreated = false;
+        user.credential = UserCredential.create(email, password);
+        user.name = name;
         return user;
     }
 
-    public Long getId () {
+    public Long getId() {
         return this.id;
     }
-    public String getEmail () {
-        return this.email;
+
+    public String getEmail() {
+        return this.credential.getEmail();
     }
-    public String getName () {
+
+    public String getName() {
         return this.name;
     }
-    public boolean isCreated () {
-        return this.isCreated;
-    }
-    public boolean isUpdated () {
-        return this.isUpdated;
+
+    public void verify(String password) {
+        if (!this.credential.verify(password)) {
+            throw new BadCredentialsException(this.credential.getEmail());
+        }
     }
 
-    public boolean confirmPassword (String password) {
-        PasswordEncoder encoder = PasswordFactory.getInstance();
-        return encoder.matches(password, this.password);
+    public void updateInfo(String name) {
+        this.name = name;
     }
 
-    @PrePersist
-    public void prePersist () {
-        super.prePersist();
-        this.isCreated = false;
-    }
-    @PostPersist
-    public void postPersist () {
-        this.isCreated = true;
-    }
-    @PreUpdate
-    public void preUpdate () {
-        super.preUpdate();
-        this.isUpdated = false;
-    }
-    @PostUpdate
-    public void postUpdate () {
-        this.isUpdated = true;
+    public void updatePassword(String newPassword) {
+        this.credential.updatePassword(newPassword);
     }
 }
