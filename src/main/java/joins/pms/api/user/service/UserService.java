@@ -5,9 +5,13 @@ import joins.pms.api.user.domain.UserInfo;
 import joins.pms.api.user.exception.AlreadyEmailExistsException;
 import joins.pms.api.user.exception.UserNotFoundException;
 import joins.pms.api.user.model.PasswordUpdateRequest;
+import joins.pms.api.user.model.SignResponse;
 import joins.pms.api.user.model.SignupRequest;
 import joins.pms.api.user.model.UserUpdateRequest;
 import joins.pms.api.user.repository.UserRepository;
+import joins.pms.core.jwt.JwtAuthentication;
+import joins.pms.core.jwt.JwtTokenProvider;
+import joins.pms.core.jwt.exception.JwtTokenInvalidException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -50,10 +54,26 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public UserInfo signin(String email, String password) {
+    public void resetToken(Long id) {
+        User user = _findById(id);
+        user.resetToken();
+        userRepository.save(user);
+    }
+
+    public SignResponse signin(String email, String password) {
         User user = _findByEmail(email);
         user.verify(password);
-        return UserInfo.valueOf(user);
+        String accessToken = JwtTokenProvider.generateAccessToken(email);
+        String refreshToken = JwtTokenProvider.generateRefreshToken(email);
+        user.updateToken(accessToken, refreshToken);
+        userRepository.save(user);
+        return new SignResponse(accessToken, refreshToken);
+    }
+
+    public void updateToken(UserInfo userInfo, String accessToken, String refreshToken) {
+        User user = userRepository.findByCredentialEmail(userInfo.getEmail()).orElseThrow(UserNotFoundException::new);
+        user.updateToken(accessToken, refreshToken);
+        userRepository.save(user);
     }
 
     public void checkEmailIsDuplicated(String email) {
@@ -62,10 +82,29 @@ public class UserService {
         }
     }
 
+    public SignResponse resign(String accessToken, String refreshToken) {
+        String email = JwtTokenProvider.getPrincipal(accessToken);
+        User user = userRepository.findByCredentialEmail(email).orElseThrow(UserNotFoundException::new);
+        user.verifyToken(accessToken, refreshToken);
+
+        String newAccessToken = JwtTokenProvider.generateAccessToken(email);
+        String newRefreshToken = JwtTokenProvider.generateRefreshToken(email);
+        user.updateToken(newAccessToken, newRefreshToken);
+        userRepository.save(user);
+        return new SignResponse(newAccessToken, newRefreshToken);
+    }
+
+    public void verifyToken(String email, String accessToken) {
+        User user = userRepository.findByCredentialEmail(email).orElseThrow(UserNotFoundException::new);
+        if (!user.verifyToken(accessToken)) {
+            throw new JwtTokenInvalidException();
+        }
+    }
+
     private User _findById(Long userId) {
-        return userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+        return userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
     }
     private User _findByEmail(String email) {
-        return userRepository.findByCredentialEmail(email).orElseThrow(() -> new UserNotFoundException(email));
+        return userRepository.findByCredentialEmail(email).orElseThrow(UserNotFoundException::new);
     }
 }

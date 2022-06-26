@@ -1,4 +1,4 @@
-package joins.pms.core.jwt;
+package joins.pms.core.jwt.exception;
 
 public class JwtTokenExpiredException extends RuntimeException {
     public JwtTokenExpiredException() {

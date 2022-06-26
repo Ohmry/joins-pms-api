@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+@Deprecated
 @Component
 public class AuthenticationHandler implements AuthenticationFailureHandler, AuthenticationSuccessHandler {
     @Override
