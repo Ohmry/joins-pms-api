@@ -16,8 +16,8 @@ public class UserUpdateRequest extends BaseDataTransferObject {
     }
 
     @Override
-    public BaseDataTransferObject checkSameUser(Long id) {
-        if (!this.id.equals(id)) {
+    public BaseDataTransferObject equalsUserId(Long userId) {
+        if (!this.id.equals(userId)) {
             throw new IllegalArgumentException();
         }
         return this;

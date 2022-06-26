@@ -8,10 +8,8 @@ import joins.pms.api.user.model.PasswordUpdateRequest;
 import joins.pms.api.user.model.SignupRequest;
 import joins.pms.api.user.model.UserUpdateRequest;
 import joins.pms.api.user.repository.UserRepository;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 

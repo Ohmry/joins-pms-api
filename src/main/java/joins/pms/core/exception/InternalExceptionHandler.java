@@ -4,6 +4,7 @@ import joins.pms.api.user.exception.AlreadyEmailExistsException;
 import joins.pms.api.user.exception.UserNotFoundException;
 import joins.pms.core.http.ApiResponse;
 import joins.pms.core.http.ApiStatus;
+import joins.pms.core.jwt.JwtTokenInvalidException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -35,6 +36,12 @@ public class InternalExceptionHandler {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(new ApiResponse(ApiStatus.FAILED_LOGIN));
+    }
+    @ExceptionHandler(JwtTokenInvalidException.class)
+    public ResponseEntity<ApiResponse> handleInvliadJwtTokenException(JwtTokenInvalidException e) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new ApiResponse(ApiStatus.BAD_CREDENTIAL));
     }
     @ExceptionHandler(Exception.class)
     protected ResponseEntity<ApiResponse> handleExcpetion(Exception e) {

@@ -9,7 +9,8 @@ public enum ApiStatus {
     USER_NOT_FOUND(-103, "사용자 정보를 찾을 수 없습니다."),
     /** Common (-900 ~ -999) */
     ILLEGAL_ARGUMENT(-900, "파라미터가 올바르지 않습니다."),
-    FAILED_PROCEED(-999, "요청하신 서비스를 처리하지 못했습니다.")
+    FAILED_PROCEED(-999, "요청하신 서비스를 처리하지 못했습니다."),
+    BAD_CREDENTIAL(-998, "서비스에 접근할 수 있는 권한이 존재하지 않습니다.")
     ;
 
     private final int code;

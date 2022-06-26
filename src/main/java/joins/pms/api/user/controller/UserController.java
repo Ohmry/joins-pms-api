@@ -1,16 +1,15 @@
 package joins.pms.api.user.controller;
 
 import joins.pms.api.user.domain.UserInfo;
-import joins.pms.api.user.exception.AlreadyEmailExistsException;
+import joins.pms.api.user.domain.UserToken;
 import joins.pms.api.user.model.PasswordUpdateRequest;
 import joins.pms.api.user.model.SignupRequest;
 import joins.pms.api.user.model.UserUpdateRequest;
 import joins.pms.api.user.service.UserService;
 import joins.pms.core.exception.InternalExceptionHandler;
-import joins.pms.core.http.SpringSecurityConfigure;
 import joins.pms.core.http.ApiResponse;
 import joins.pms.core.http.ApiStatus;
-import org.springframework.http.HttpStatus;
+import joins.pms.core.http.SpringSecurityConfigure;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -27,7 +26,9 @@ import java.util.List;
 
 /**
  * 사용자관련 Controller 객체
- * <p>UserInterface 레이어에 존재한다.</p>
+ * <p>
+ * UserInterface 레이어에 존재한다.
+ * </p>
  */
 @RestController
 @RequestMapping("/api")
@@ -76,7 +77,7 @@ public class UserController implements AuthenticationProvider {
     @PutMapping("/user/{id}")
     public ResponseEntity<ApiResponse> updateUserInfo(@PathVariable Long id, @RequestBody UserUpdateRequest request) throws URISyntaxException {
         request.checkParameterValidation();
-        request.checkSameUser(id);
+        request.equalsUserId(id);
         UserInfo userInfo = userService.updateUser(id, request);
         return ResponseEntity
                 .created(new URI("/api/user/" + userInfo.getId()))
@@ -87,7 +88,7 @@ public class UserController implements AuthenticationProvider {
     @PutMapping("/user/{id}/credential")
     public ResponseEntity<ApiResponse> updateUserPassword(@PathVariable Long id, @RequestBody PasswordUpdateRequest request) {
         request.checkParameterValidation();
-        request.checkSameUser(id);
+        request.equalsUserId(id);
         userService.updateUserPassword(id, request);
         return ResponseEntity
                 .noContent()
@@ -124,9 +125,10 @@ public class UserController implements AuthenticationProvider {
     @PostMapping("/signin/success")
     public ResponseEntity<ApiResponse> success(HttpServletRequest httpServletRequest) {
         HttpSession httpSession = httpServletRequest.getSession();
+        UserInfo userInfo = (UserInfo) httpSession.getAttribute("principal");
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(new ApiResponse(ApiStatus.SUCCESS, httpSession.getAttribute("email")));
+                .body(new ApiResponse(ApiStatus.SUCCESS, UserToken.create(userInfo)));
     }
 
     @Override
