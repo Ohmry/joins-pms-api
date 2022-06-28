@@ -45,8 +45,8 @@ public class UserController {
      */
     @PostMapping("/signup")
     public ResponseEntity<ApiResponse> signup(@RequestBody SignupRequest request) throws URISyntaxException {
-        request.checkParameterValidation();
-        userService.checkEmailIsDuplicated(request.email);
+        request.validate();
+        userService.checkExistsEmail(request.email);
         UserInfo userInfo = userService.createUser(request);
         return ResponseEntity
                 .created(new URI("/api/user/" + userInfo.getId()))
@@ -56,7 +56,7 @@ public class UserController {
 
     @PostMapping("/signin")
     public ResponseEntity<ApiResponse> signin(@RequestBody SigninRequest request) {
-        request.checkParameterValidation();
+        request.validate();
         SignResponse response = userService.signin(request.email, request.password);
         return ResponseEntity
                 .ok(new ApiResponse(ApiStatus.SUCCESS, response));
@@ -64,7 +64,7 @@ public class UserController {
 
     @PostMapping("/resign")
     public ResponseEntity<ApiResponse> resign(HttpServletRequest servletRequest, @RequestBody ResignRequest request) {
-        request.checkParameterValidation();
+        request.validate();
         String accessToken = JwtTokenProvider.getAccessToken(servletRequest.getHeader("Authorization"));
         SignResponse response = userService.resign(accessToken, request.refreshToken);
         return ResponseEntity
@@ -85,8 +85,7 @@ public class UserController {
 
     @PutMapping("/user/{id}")
     public ResponseEntity<ApiResponse> updateUserInfo(@PathVariable Long id, @RequestBody UserUpdateRequest request) throws URISyntaxException {
-        request.checkParameterValidation();
-        request.equalsUserId(id);
+        request.validate();
         UserInfo userInfo = userService.updateUser(id, request);
         return ResponseEntity
                 .created(new URI("/api/user/" + userInfo.getId()))
@@ -96,8 +95,7 @@ public class UserController {
 
     @PutMapping("/user/{id}/credential")
     public ResponseEntity<ApiResponse> updateUserPassword(@PathVariable Long id, @RequestBody PasswordUpdateRequest request) {
-        request.checkParameterValidation();
-        request.equalsUserId(id);
+        request.validate();
         userService.updateUserPassword(id, request);
         userService.resetToken(id);
         return ResponseEntity

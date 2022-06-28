@@ -1,29 +1,19 @@
 package joins.pms.api.user.model;
 
-import joins.pms.core.domain.BaseDataTransferObject;
+import joins.pms.api.v1.exception.IllegalRequestException;
 import org.springframework.util.StringUtils;
 
 /**
  * 사용자의 비밀번호를 변경하기 위한 요청 객체
  */
-public class PasswordUpdateRequest extends BaseDataTransferObject {
+public class PasswordUpdateRequest {
     public Long id;
     public String password;
     public String newPassword;
 
-    @Override
-    public BaseDataTransferObject checkParameterValidation() {
+    public void validate() {
         if (id == null || id < 1 || !StringUtils.hasText(password) || !StringUtils.hasText(newPassword)) {
-            throw new IllegalArgumentException();
+            throw new IllegalRequestException();
         }
-        return this;
-    }
-
-    @Override
-    public BaseDataTransferObject equalsUserId(Long userId) {
-        if (!this.id.equals(userId)) {
-            throw new IllegalArgumentException();
-        }
-        return this;
     }
 }

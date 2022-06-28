@@ -1,8 +1,6 @@
 package joins.pms.api.user.model;
 
-import joins.pms.core.domain.BaseDataTransferObject;
-
-public class SignResponse extends BaseDataTransferObject {
+public class SignResponse {
     public final String accessToken;
     public final String refreshToken;
 

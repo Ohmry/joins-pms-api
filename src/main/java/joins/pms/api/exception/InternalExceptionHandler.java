@@ -2,6 +2,8 @@ package joins.pms.api.exception;
 
 import joins.pms.api.user.exception.AlreadyEmailExistsException;
 import joins.pms.api.user.exception.UserNotFoundException;
+import joins.pms.api.v1.exception.DomainNotFoundException;
+import joins.pms.api.v1.exception.IllegalRequestException;
 import joins.pms.core.http.ApiResponse;
 import joins.pms.core.http.ApiStatus;
 import joins.pms.core.jwt.exception.JwtTokenInvalidException;
@@ -18,6 +20,19 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestControllerAdvice
 public class InternalExceptionHandler implements ErrorController {
+    /** Common */
+    @ExceptionHandler(DomainNotFoundException.class)
+    public ResponseEntity<ApiResponse> handleDomainNotFoundException(DomainNotFoundException e) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(new ApiResponse(ApiStatus.DOMAIN_NOT_FOUND));
+    }
+    @ExceptionHandler(IllegalRequestException.class)
+    public ResponseEntity<ApiResponse> handleIllegalCreateRequestException(IllegalRequestException e) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new ApiResponse(ApiStatus.ILLEGAL_ARGUMENT));
+    }
     @ExceptionHandler(IllegalArgumentException.class)
     protected ResponseEntity<ApiResponse> handleIllegalArgumentException(IllegalArgumentException e) {
         return ResponseEntity

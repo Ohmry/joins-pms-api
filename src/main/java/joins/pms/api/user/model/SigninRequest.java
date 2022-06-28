@@ -1,17 +1,15 @@
 package joins.pms.api.user.model;
 
-import joins.pms.core.domain.BaseDataTransferObject;
+import joins.pms.api.v1.exception.IllegalRequestException;
 import org.springframework.util.StringUtils;
 
-public class SigninRequest extends BaseDataTransferObject {
+public class SigninRequest {
     public String email;
     public String password;
 
-    @Override
-    public BaseDataTransferObject checkParameterValidation() {
+    public void validate() {
         if (!StringUtils.hasText(email) || !StringUtils.hasText(password)) {
-            throw new IllegalArgumentException();
+            throw new IllegalRequestException();
         }
-        return this;
     }
 }
