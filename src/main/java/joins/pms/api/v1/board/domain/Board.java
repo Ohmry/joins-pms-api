@@ -1,8 +1,10 @@
 package joins.pms.api.v1.board.domain;
 
+import joins.pms.api.domain.BaseEntity;
+import joins.pms.api.domain.RowStatus;
+import joins.pms.api.user.domain.User;
 import joins.pms.api.v1.project.domain.Project;
-import joins.pms.core.domain.BaseEntity;
-import joins.pms.core.domain.RowStatus;
+import joins.pms.api.v1.task.domain.Task;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -11,29 +13,45 @@ import java.util.Set;
 public class Board extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
-    @Column
+    private Long id;
+    @Column(length = 50, nullable = false)
     private String title;
     @Column
     private String description;
-    @OneToMany(mappedBy = "board", fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "owner")
+    private User owner;
+    @OneToMany(mappedBy = "board")
     private Set<Project> projects;
-
-    public Board() {
-        super();
+    @OneToMany(mappedBy = "board")
+    private Set<Task> tasks;
+    
+    protected Board() {}
+    public static Board create(String title, String description) {
+        Board board = new Board();
+        board.title = title;
+        board.description = description;
+        return board;
     }
-    public Board(String title, String description) {
-        super();
-        this.title = title;
-        this.description = description;
-    }
-
+    
     public enum Field {
         title,
         description,
         rowStatus
     }
-
+    
+    public Long getId() {
+        return this.id;
+    }
+    
+    public String getTitle() {
+        return this.title;
+    }
+    
+    public String getDescription() {
+        return this.description;
+    }
+    
     public void update(Field field, Object value) {
         switch (field) {
             case title:
@@ -44,21 +62,9 @@ public class Board extends BaseEntity {
                 break;
             case rowStatus:
                 this.rowStatus = RowStatus.valueOf(value.toString());
+                break;
             default:
                 break;
         }
     }
-
-    public Long getId() {
-        return this.id;
-    }
-
-    public String getTitle() {
-        return this.title;
-    }
-
-    public String getDescription() {
-        return this.description;
-    }
-
 }

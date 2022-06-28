@@ -1,4 +1,4 @@
-package joins.pms.core.domain;
+package joins.pms.api.domain;
 
 public enum Progress {
     READY,

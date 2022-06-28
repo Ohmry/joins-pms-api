@@ -1,10 +1,10 @@
 package joins.pms.api.user.model;
 
-public class SignResponse {
+public class SigninResponse {
     public final String accessToken;
     public final String refreshToken;
 
-    public SignResponse(String accessToken, String refreshToken) {
+    public SigninResponse(String accessToken, String refreshToken) {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
     }

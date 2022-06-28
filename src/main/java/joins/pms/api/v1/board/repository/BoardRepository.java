@@ -1,7 +1,7 @@
 package joins.pms.api.v1.board.repository;
 
+import joins.pms.api.domain.RowStatus;
 import joins.pms.api.v1.board.domain.Board;
-import joins.pms.core.domain.RowStatus;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

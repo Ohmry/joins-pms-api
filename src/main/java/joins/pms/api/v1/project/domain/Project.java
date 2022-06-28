@@ -1,59 +1,84 @@
 package joins.pms.api.v1.project.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import joins.pms.api.domain.BaseEntity;
+import joins.pms.api.domain.Progress;
+import joins.pms.api.domain.RowStatus;
 import joins.pms.api.v1.board.domain.Board;
-import joins.pms.core.domain.BaseEntity;
-import joins.pms.core.domain.Progress;
-import joins.pms.core.domain.RowStatus;
+import joins.pms.api.v1.domain.Duration;
+import joins.pms.api.v1.task.domain.Task;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 public class Project extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column
+    @Column(length = 50, nullable = false)
     private String title;
     @Column
     private String description;
-    @Column
-    private LocalDateTime startDateTime;
-    @Column
-    private LocalDateTime endDateTime;
+    @Embedded
+    Duration duration;
     @Enumerated(EnumType.STRING)
     @Column
     private Progress progress;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = Board.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id")
-    @JsonBackReference
     private Board board;
-
-    public Project() {
-        super();
-    }
-    public Project(Board board, String title, String description, LocalDateTime startDateTime, LocalDateTime endDateTime, Progress progress) {
-        super();
-        LocalDateTime now = LocalDateTime.now();
-        this.title = title;
-        this.description = description;
-        this.startDateTime = startDateTime == null ? now : startDateTime;
-        this.endDateTime = endDateTime == null ? now : endDateTime;
-        this.progress = progress == null ? Progress.READY : progress;
-        this.board = board;
-    }
-
+    @OneToMany(mappedBy = "project")
+    private Set<Task> tasks;
+    
     public enum Field {
         title,
         description,
         startDateTime,
         endDateTime,
         progress,
-        rowStatus,
-        board
+        rowStatus
     }
-
+    
+    public static Project create(Board board, String title, String description, LocalDateTime startDateTime, LocalDateTime endDateTime, Progress progress) {
+        LocalDateTime now = LocalDateTime.now();
+        Project project = new Project();
+        project.title = title;
+        project.description = description;
+        project.duration = new Duration(startDateTime, endDateTime);
+        project.progress = progress == null ? Progress.READY : progress;
+        project.board = board;
+        return project;
+    }
+    
+    public Long getId() {
+        return this.id;
+    }
+    
+    public String getTitle() {
+        return this.title;
+    }
+    
+    public String getDescription() {
+        return this.description;
+    }
+    
+    public LocalDateTime getStartDateTime() {
+        return this.duration.getStartDateTime();
+    }
+    
+    public LocalDateTime getEndDateTime() {
+        return this.duration.getEndDateTime();
+    }
+    
+    public Progress getProgress() {
+        return this.progress;
+    }
+    
+    public Board getBoard() {
+        return this.board;
+    }
+    
     public void update(Field field, Object value) {
         switch (field) {
             case title:
@@ -63,50 +88,18 @@ public class Project extends BaseEntity {
                 this.description = value.toString();
                 break;
             case startDateTime:
-                this.startDateTime = (LocalDateTime) value;
+                this.duration.update(Duration.Field.startDateTime, value);
                 break;
             case endDateTime:
-                this.endDateTime = (LocalDateTime) value;
+                this.duration.update(Duration.Field.endDateTime, value);
                 break;
             case progress:
                 this.progress = Progress.valueOf(value.toString());
                 break;
             case rowStatus:
                 this.rowStatus = RowStatus.valueOf(value.toString());
-                break;
-            case board:
-                this.board = (Board) value;
-                break;
             default:
                 break;
         }
-    }
-
-    public Long getId() {
-        return this.id;
-    }
-
-    public String getTitle() {
-        return this.title;
-    }
-
-    public String getDescription() {
-        return this.description;
-    }
-
-    public LocalDateTime getStartDateTime() {
-        return this.startDateTime;
-    }
-
-    public LocalDateTime getEndDateTime() {
-        return this.endDateTime;
-    }
-
-    public Progress getProgress() {
-        return this.progress;
-    }
-
-    public Board getBoard() {
-        return this.board;
     }
 }
