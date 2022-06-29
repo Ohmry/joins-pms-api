@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api")
 public class UserController {
     private final UserService userService;
     
@@ -42,7 +42,7 @@ public class UserController {
             .body(new ApiResponse(ApiStatus.SUCCESS));
     }
     
-    @GetMapping("/{id}")
+    @GetMapping("/user/{id}")
     public ResponseEntity<ApiResponse> getUser(@PathVariable Long userId) {
         UserInfo userInfo = userService.getUser(userId);
         return ResponseEntity
@@ -50,7 +50,7 @@ public class UserController {
             .body(new ApiResponse(ApiStatus.SUCCESS, userInfo));
     }
     
-    @GetMapping
+    @GetMapping("/user")
     public ResponseEntity<ApiResponse> getUserList(@RequestParam int pageNo, @RequestParam int recordCount) {
         List<UserInfo> userList = userService.getUserList(pageNo, recordCount);
         return ResponseEntity
@@ -58,7 +58,7 @@ public class UserController {
             .body(new ApiResponse(ApiStatus.SUCCESS, userList));
     }
     
-    @PutMapping
+    @PutMapping("/user")
     public ResponseEntity<ApiResponse> updateUser(@RequestBody UserUpdateRequest request) {
         request.validate();
         Long userId = userService.updateUser(request.id, request.name, request.role);
@@ -69,7 +69,7 @@ public class UserController {
             .body(new ApiResponse(ApiStatus.SUCCESS, userInfo));
     }
     
-    @PutMapping("/credential")
+    @PutMapping("/user/credential")
     public ResponseEntity<ApiResponse> updateUserPassword(@RequestBody UserPasswordUpdateRequest request) {
         request.validate();
         Long userId = userService.updateUserPassword(request.email, request.password, request.newPassword);
@@ -80,7 +80,7 @@ public class UserController {
             .body(new ApiResponse(ApiStatus.USER_NEED_RESIGNIN, userInfo));
     }
     
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/user/{id}")
     public ResponseEntity<ApiResponse> deleteUser(@PathVariable Long userId) {
         userService.deleteUser(userId);
         return ResponseEntity

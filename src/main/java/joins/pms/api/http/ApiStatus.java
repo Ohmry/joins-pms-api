@@ -15,7 +15,8 @@ public enum ApiStatus {
     BAD_CREDENTIAL(-100, "이메일 또는 비밀번호가 올바르지 않습니다."),
     /** Common (-900 ~ -999) */
     ILLEGAL_PARAMETERS(-900, "파라미터가 올바르지 않습니다."),
-    DOMAIN_NOT_FOUND(-901, "정보를 찾을 수 없습니다.")
+    DOMAIN_NOT_FOUND(-901, "정보를 찾을 수 없습니다."),
+    UNAUTHORIZATION(-902, "인증받지 않은 요청입니다."),
     
     
     ;

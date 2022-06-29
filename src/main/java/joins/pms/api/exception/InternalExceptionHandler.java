@@ -34,6 +34,13 @@ public class InternalExceptionHandler implements ErrorController {
             .status(HttpStatus.BAD_REQUEST)
             .body(new ApiResponse(ApiStatus.BAD_CREDENTIAL));
     }
+
+    @ExceptionHandler(UnAuthorizationException.class)
+    public ResponseEntity<ApiResponse> handleUnAuthorizationException(UnAuthorizationException e) {
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(new ApiResponse(ApiStatus.UNAUTHORIZATION));
+    }
     
     @GetMapping("/error")
     public ResponseEntity<ApiResponse> handle (HttpServletRequest request) {
