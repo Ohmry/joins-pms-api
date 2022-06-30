@@ -2,6 +2,7 @@ package joins.pms.api.user.domain;
 
 import joins.pms.api.domain.BaseEntity;
 import joins.pms.api.domain.RowStatus;
+import joins.pms.api.exception.DomainNotFoundException;
 import joins.pms.api.group.domain.Group;
 import joins.pms.api.group.domain.GroupUser;
 import joins.pms.core.jwt.exception.JwtTokenInvalidException;
@@ -41,7 +42,7 @@ public class User extends BaseEntity {
     
     protected User() {
         this.role = UserRole.USER;
-        this.groups = new ArrayList<GroupUser>();
+        this.groups = new ArrayList<>();
         this.token = new UserToken();
     }
     public static User create(String email, String password, String name, UserRole role) {
@@ -80,7 +81,7 @@ public class User extends BaseEntity {
     public List<GroupUser> getGroups() {
         return this.groups;
     }
-    
+
     public void update(Field field, Object value) {
         switch (field) {
             case name:
@@ -121,5 +122,13 @@ public class User extends BaseEntity {
             default:
                 return false;
         }
+    }
+
+    public void leaveGroup(Group group) {
+        GroupUser groupUser = this.groups.stream()
+                .filter(groupUserInfo -> groupUserInfo.getGroup().equals(group))
+                .findAny()
+                .orElseThrow(() -> new DomainNotFoundException(GroupUser.class));
+        this.groups.remove(groupUser);
     }
 }

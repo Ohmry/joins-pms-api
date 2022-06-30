@@ -3,10 +3,12 @@ package joins.pms.api.group.model;
 import joins.pms.api.group.domain.Group;
 import joins.pms.api.user.model.UserSimpleInfo;
 import joins.pms.api.v1.board.domain.Board;
+import joins.pms.core.annotations.ValueObject;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@ValueObject
 public class GroupInfo {
     public final Long id;
     public final String name;

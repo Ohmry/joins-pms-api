@@ -86,7 +86,7 @@ public class GroupController {
         Long groupId = groupService.addGroupUser(id, request.userId);
         GroupInfo groupInfo = groupService.getGroup(groupId);
         return ResponseEntity
-                .status(HttpStatus.CREATED)
+                .status(HttpStatus.OK)
                 .header(HttpHeaders.LOCATION, "/api/group/" + groupId)
                 .body(new ApiResponse(ApiStatus.SUCCESS, groupInfo));
     }

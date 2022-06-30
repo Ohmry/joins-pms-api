@@ -82,7 +82,7 @@ public class Group extends BaseEntity {
 
     public void removeUser(User user) {
         GroupUser groupUser = this.users.stream()
-                .filter(groupUserInfo -> groupUserInfo.user.equals(user))
+                .filter(groupUserInfo -> groupUserInfo.getUser().equals(user))
                 .findAny()
                 .orElseThrow(() -> new DomainNotFoundException(GroupUser.class));
         this.users.remove(groupUser);

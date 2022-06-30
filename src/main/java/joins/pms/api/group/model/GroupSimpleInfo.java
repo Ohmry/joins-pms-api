@@ -1,7 +1,9 @@
 package joins.pms.api.group.model;
 
 import joins.pms.api.group.domain.Group;
+import joins.pms.core.annotations.ValueObject;
 
+@ValueObject
 public class GroupSimpleInfo {
     public final Long id;
     public final String name;

@@ -120,7 +120,13 @@ public class UserController {
     public ResponseEntity<ApiResponse> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
         return ResponseEntity
-            .status(HttpStatus.NO_CONTENT)
-            .body(new ApiResponse(ApiStatus.SUCCESS));
+            .status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @DeleteMapping("/user/{id}/group/{groupId}")
+    public ResponseEntity<ApiResponse> leaveGroup(@PathVariable Long id, @PathVariable Long groupId) {
+        userService.leaveGroup(id, groupId);
+        return ResponseEntity
+                .status(HttpStatus.NO_CONTENT).build();
     }
 }

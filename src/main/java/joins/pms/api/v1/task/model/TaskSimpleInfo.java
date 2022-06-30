@@ -1,8 +1,6 @@
 package joins.pms.api.v1.task.model;
 
 import joins.pms.api.domain.Progress;
-import joins.pms.api.v1.board.model.BoardSimpleInfo;
-import joins.pms.api.v1.project.model.ProjectSimpleInfo;
 import joins.pms.api.v1.task.domain.Task;
 import joins.pms.core.annotations.ValueObject;
 
@@ -10,7 +8,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @ValueObject
-public class TaskInfo {
+public class TaskSimpleInfo {
     public final Long id;
     public final String title;
     public final String description;
@@ -21,16 +19,13 @@ public class TaskInfo {
     public final String endDateHour;
     public final String endDateMinute;
     public final Progress progress;
-    public final BoardSimpleInfo board;
-    public final ProjectSimpleInfo project;
-    
-    
-    protected TaskInfo(Long id, String title, String description, LocalDateTime startDateTime, LocalDateTime endDateTime, Progress progress,
-                       BoardSimpleInfo board, ProjectSimpleInfo project) {
+
+
+    protected TaskSimpleInfo(Long id, String title, String description, LocalDateTime startDateTime, LocalDateTime endDateTime, Progress progress) {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
         DateTimeFormatter hourFormatter = DateTimeFormatter.ofPattern("HH");
         DateTimeFormatter minuteFormatter = DateTimeFormatter.ofPattern("mm");
-        
+
         this.id = id;
         this.title = title;
         this.description = description;
@@ -41,19 +36,15 @@ public class TaskInfo {
         this.endDateHour = endDateTime.format(hourFormatter);
         this.endDateMinute = endDateTime.format(minuteFormatter);
         this.progress = progress;
-        this.board = board;
-        this.project = project;
     }
-    
-    public static TaskInfo valueOf(Task task) {
-        return new TaskInfo(task.getId(),
-            task.getTitle(),
-            task.getDescription(),
-            task.getStartDateTime(),
-            task.getEndDateTime(),
-            task.getProgress(),
-            BoardSimpleInfo.valueOf(task.getBoard()),
-            ProjectSimpleInfo.valueOf(task.getProject())
+
+    public static TaskSimpleInfo valueOf(Task task) {
+        return new TaskSimpleInfo(task.getId(),
+                task.getTitle(),
+                task.getDescription(),
+                task.getStartDateTime(),
+                task.getEndDateTime(),
+                task.getProgress()
         );
     }
 }

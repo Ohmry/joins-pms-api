@@ -57,6 +57,14 @@ public class Board extends BaseEntity {
         return this.description;
     }
 
+    public Set<Project> getProjects() {
+        return this.projects;
+    }
+
+    public Set<Task> getTasks() {
+        return this.tasks;
+    }
+
     public void update(Field field, Object value) {
         switch (field) {
             case title:

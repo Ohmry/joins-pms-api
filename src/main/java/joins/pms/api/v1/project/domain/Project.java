@@ -79,6 +79,10 @@ public class Project extends BaseEntity {
     public Board getBoard() {
         return this.board;
     }
+
+    public Set<Task> getTasks() {
+        return this.tasks;
+    }
     
     public void update(Field field, Object value) {
         switch (field) {

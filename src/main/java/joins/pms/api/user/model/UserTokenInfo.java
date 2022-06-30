@@ -1,7 +1,9 @@
 package joins.pms.api.user.model;
 
 import joins.pms.api.user.domain.UserToken;
+import joins.pms.core.annotations.ValueObject;
 
+@ValueObject
 public class UserTokenInfo {
     public final String accessToken;
     public final String refreshToken;

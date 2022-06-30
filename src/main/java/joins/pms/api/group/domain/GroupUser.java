@@ -14,11 +14,11 @@ public class GroupUser extends BaseEntity {
 
     @JoinColumn(name = "group_id")
     @ManyToOne(fetch = FetchType.LAZY)
-    Group group;
+    private Group group;
 
     @JoinColumn(name = "user_id")
     @ManyToOne(fetch = FetchType.LAZY)
-    User user;
+    private User user;
 
     public GroupUser() {}
     public static GroupUser create (Group group, User user) {

@@ -3,10 +3,12 @@ package joins.pms.api.user.model;
 import joins.pms.api.group.model.GroupSimpleInfo;
 import joins.pms.api.user.domain.User;
 import joins.pms.api.user.domain.UserRole;
+import joins.pms.core.annotations.ValueObject;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@ValueObject
 public class UserInfo {
     public final Long id;
     public final String email;

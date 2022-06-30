@@ -6,7 +6,10 @@ import joins.pms.api.exception.BadCredentialException;
 import joins.pms.api.exception.DomainNotFoundException;
 import joins.pms.api.exception.IllegalRequestException;
 import joins.pms.api.exception.UnauthorizationException;
-import joins.pms.api.user.domain.*;
+import joins.pms.api.group.domain.Group;
+import joins.pms.api.group.repository.GroupRepository;
+import joins.pms.api.user.domain.User;
+import joins.pms.api.user.domain.UserRole;
 import joins.pms.api.user.exception.UserEmailAlreadyExistsException;
 import joins.pms.api.user.model.UserInfo;
 import joins.pms.api.user.model.UserTokenInfo;
@@ -17,16 +20,18 @@ import joins.pms.core.utils.Password;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    private final GroupRepository groupRepository;
     
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository,
+                       GroupRepository groupRepository) {
         this.userRepository = userRepository;
+        this.groupRepository = groupRepository;
     }
     
     public UserInfo signin(String email, String password) {
@@ -149,6 +154,14 @@ public class UserService {
         if (!user.validate(User.Field.accessToken, accessToken)) {
             throw new JwtTokenInvalidException();
         }
+    }
 
+    public void leaveGroup(Long userId, Long groupId) {
+        User user = userRepository.findByIdAndRowStatus(userId, RowStatus.NORMAL)
+                .orElseThrow(() -> new DomainNotFoundException(User.class));
+        Group group = groupRepository.findByIdAndRowStatus(groupId, RowStatus.NORMAL)
+                .orElseThrow(() -> new DomainNotFoundException(Group.class));
+        user.leaveGroup(group);
+        userRepository.save(user);
     }
 }
