@@ -4,6 +4,7 @@ import joins.pms.api.exception.UnauthorizationException;
 import joins.pms.api.group.model.GroupInfo;
 import joins.pms.api.group.model.GroupCreateRequest;
 import joins.pms.api.group.model.GroupUpdateRequest;
+import joins.pms.api.group.model.GroupUserAddRequest;
 import joins.pms.api.group.service.GroupService;
 import joins.pms.api.http.ApiResponse;
 import joins.pms.api.http.ApiStatus;
@@ -77,5 +78,25 @@ public class GroupController {
         return ResponseEntity
                 .status(HttpStatus.NO_CONTENT)
                 .body(new ApiResponse(ApiStatus.SUCCESS));
+    }
+
+    @PostMapping("/{id}/user")
+    public ResponseEntity<ApiResponse> addGroupUser(@PathVariable Long id, @RequestBody GroupUserAddRequest request) {
+        request.validate();
+        Long groupId = groupService.addGroupUser(id, request.userId);
+        GroupInfo groupInfo = groupService.getGroup(groupId);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .header(HttpHeaders.LOCATION, "/api/group/" + groupId)
+                .body(new ApiResponse(ApiStatus.SUCCESS, groupInfo));
+    }
+
+    @DeleteMapping("/{id}/user/{userId}")
+    public ResponseEntity<ApiResponse> removeGroupUser(@PathVariable Long id, @PathVariable Long userId) {
+        Long groupId = groupService.removeGroupUser(id, userId);
+        GroupInfo groupInfo = groupService.getGroup(groupId);
+        return ResponseEntity
+                .status(HttpStatus.NO_CONTENT)
+                .build();
     }
 }

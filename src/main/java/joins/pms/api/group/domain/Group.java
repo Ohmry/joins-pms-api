@@ -22,7 +22,7 @@ public class Group extends BaseEntity {
     @JoinColumn(name = "owner")
     User owner;
     @JsonIgnore
-    @OneToMany(mappedBy = "group", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "group", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     List<GroupUser> users;
     @OneToMany(mappedBy = "group", fetch = FetchType.LAZY)
     List<Board> boards;
@@ -80,7 +80,7 @@ public class Group extends BaseEntity {
         this.users.add(groupUser);
     }
 
-    public void deleteUser(User user) {
+    public void removeUser(User user) {
         GroupUser groupUser = this.users.stream()
                 .filter(groupUserInfo -> groupUserInfo.user.equals(user))
                 .findAny()

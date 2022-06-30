@@ -65,4 +65,22 @@ public class GroupService {
             throw new GroupNameAlreadyExistsException();
         }
     }
+
+    public Long addGroupUser(Long id, Long userId) {
+        Group group = groupRepository.findByIdAndRowStatus(id, RowStatus.NORMAL)
+                .orElseThrow(() -> new DomainNotFoundException(Group.class));
+        User user = userRepository.findByIdAndRowStatus(userId, RowStatus.NORMAL)
+                .orElseThrow(() -> new DomainNotFoundException(User.class));
+        group.addUser(user);
+        return groupRepository.save(group).getId();
+    }
+
+    public Long removeGroupUser(Long id, Long userId) {
+        Group group = groupRepository.findByIdAndRowStatus(id, RowStatus.NORMAL)
+                .orElseThrow(() -> new DomainNotFoundException(Group.class));
+        User user = userRepository.findByIdAndRowStatus(userId, RowStatus.NORMAL)
+                .orElseThrow(() -> new DomainNotFoundException(User.class));
+        group.removeUser(user);
+        return groupRepository.save(group).getId();
+    }
 }

@@ -2,7 +2,7 @@ package joins.pms.api.group.model;
 
 import joins.pms.api.exception.IllegalRequestException;
 
-public class GroupUserCreateRequest {
+public class GroupUserAddRequest {
     public Long userId;
 
     public void validate() {
