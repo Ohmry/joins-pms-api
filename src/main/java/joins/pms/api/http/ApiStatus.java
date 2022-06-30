@@ -11,13 +11,15 @@ package joins.pms.api.http;
 public enum ApiStatus {
     SUCCESS(0, "정상"),
     /** User(100 ~ 199, -100 ~ -199) */
-    USER_NEED_RESIGNIN(100, "비밀번호를 성공적으로 변경하였습니다. 로그인을 다시 시도해주세요"),
+    USER_NEED_RESIGNIN(100, "정보가 성공적으로 변경되었습니다. 로그인을 다시 시도해주세요"),
     BAD_CREDENTIAL(-100, "이메일 또는 비밀번호가 올바르지 않습니다."),
     /** Common (-900 ~ -999) */
     ILLEGAL_PARAMETERS(-900, "파라미터가 올바르지 않습니다."),
     DOMAIN_NOT_FOUND(-901, "정보를 찾을 수 없습니다."),
-    UNAUTHORIZATION(-902, "인증받지 않은 요청입니다."),
-    
+    UNAUTHORIZED(-902, "인증받지 못한 요청입니다."),
+    JWT_TOKEN_EXPIRED(-903, "기간이 만료된 토큰입니다."),
+    JWT_TOKEN_INVALID(-904,"유효하지않은 토큰입니다."),
+    INVALID_PERMISSION(-905, "접근이 불가능한 요청입니다."),
     
     ;
     private final int code;

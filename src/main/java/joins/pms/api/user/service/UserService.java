@@ -1,17 +1,21 @@
 package joins.pms.api.user.service;
 
+import io.jsonwebtoken.Claims;
 import joins.pms.api.domain.RowStatus;
 import joins.pms.api.exception.BadCredentialException;
 import joins.pms.api.exception.DomainNotFoundException;
-import joins.pms.api.user.domain.User;
-import joins.pms.api.user.domain.UserInfo;
-import joins.pms.api.user.domain.UserRole;
+import joins.pms.api.exception.IllegalRequestException;
+import joins.pms.api.exception.UnauthorizationException;
+import joins.pms.api.user.domain.*;
 import joins.pms.api.user.exception.UserEmailAlreadyExistsException;
 import joins.pms.api.user.repository.UserRepository;
+import joins.pms.core.jwt.JwtToken;
+import joins.pms.core.jwt.exception.JwtTokenInvalidException;
 import joins.pms.core.utils.Password;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,13 +27,14 @@ public class UserService {
         this.userRepository = userRepository;
     }
     
-    public void signin(String email, String password) {
+    public UserInfo signin(String email, String password) {
         User user = userRepository.findByEmailAndRowStatus(email, RowStatus.NORMAL)
             .orElseThrow(() -> new DomainNotFoundException(User.class));
         PasswordEncoder encoder = Password.getInstance();
         if (!encoder.matches(password, user.getPassword())) {
             throw new BadCredentialException();
         }
+        return UserInfo.valueOf(user);
     }
     
     public Long createUser(String email, String password, String name) {
@@ -59,9 +64,9 @@ public class UserService {
         return userRepository.save(user).getId();
     }
     
-    public Long updateUserPassword(String email, String password, String newPassword) {
-        User user = userRepository.findByEmailAndRowStatus(email, RowStatus.NORMAL)
-            .orElseThrow(BadCredentialException::new);
+    public Long updateUserPassword(Long userId, String password, String newPassword) {
+        User user = userRepository.findByIdAndRowStatus(userId, RowStatus.NORMAL)
+                .orElseThrow(() -> new DomainNotFoundException(User.class));
         PasswordEncoder encoder = Password.getInstance();
         if (!encoder.matches(password, user.getPassword())) {
             throw new BadCredentialException();
@@ -81,5 +86,67 @@ public class UserService {
         if (userRepository.existsByEmail(email)) {
             throw new UserEmailAlreadyExistsException(email);
         }
+    }
+    
+    public String getUserRole(String email) {
+        User user = userRepository.findByEmailAndRowStatus(email, RowStatus.NORMAL)
+            .orElseThrow(() -> new DomainNotFoundException(User.class));
+        return user.getRole().name();
+    }
+    
+    public void validateSession(Object sessionUserIdObject, Long requestUserId) {
+        if (sessionUserIdObject == null) {
+            throw new UnauthorizationException();
+        }
+        
+        Long sessionUserId = Long.parseLong(sessionUserIdObject.toString());
+        if (!sessionUserId.equals(requestUserId)) {
+            throw new IllegalRequestException();
+        }
+    }
+
+    public UserTokenInfo createToken(Long userId, String email, String clientIp) {
+        User user = userRepository.findByIdAndRowStatus(userId, RowStatus.NORMAL)
+                .orElseThrow(() -> new DomainNotFoundException(User.class));
+        String userRole = user.getRole().name();
+
+        String accessToken = JwtToken.generate(JwtToken.Type.accessToken, userId, email, clientIp, userRole);
+        String refreshToken = JwtToken.generate(JwtToken.Type.refreshToken, userId, email, clientIp, userRole);
+
+        user.update(User.Field.accessToken, accessToken);
+        user.update(User.Field.refreshToken, refreshToken);
+        userRepository.save(user);
+
+        return UserTokenInfo.valueOf(user.getToken());
+    }
+
+    public UserTokenInfo refreshToken(Long userId, String accessToken, String refreshToken) {
+        User user = userRepository.findByIdAndRowStatus(userId, RowStatus.NORMAL)
+                .orElseThrow(() -> new DomainNotFoundException(User.class));
+        if (!user.validate(User.Field.accessToken, accessToken)) {
+            throw new JwtTokenInvalidException();
+        }
+        if (!user.validate(User.Field.refreshToken, refreshToken)) {
+            throw new JwtTokenInvalidException();
+        }
+
+        Claims claims = JwtToken.getClaims(accessToken);
+        accessToken = JwtToken.generate(JwtToken.Type.accessToken, claims);
+        refreshToken = JwtToken.generate(JwtToken.Type.refreshToken, claims);
+
+        user.update(User.Field.accessToken, accessToken);
+        user.update(User.Field.refreshToken, refreshToken);
+        userRepository.save(user);
+
+        return UserTokenInfo.valueOf(user.getToken());
+    }
+
+    public void validateToken(Long userId, String accessToken) {
+        User user = userRepository.findByIdAndRowStatus(userId, RowStatus.NORMAL)
+                .orElseThrow(() -> new DomainNotFoundException(User.class));
+        if (!user.validate(User.Field.accessToken, accessToken)) {
+            throw new JwtTokenInvalidException();
+        }
+
     }
 }
