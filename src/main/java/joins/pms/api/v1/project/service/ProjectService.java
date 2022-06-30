@@ -34,12 +34,12 @@ public class ProjectService {
         LocalDateTime now = LocalDateTime.now();
         
         LocalDateTime startLocalDateTime;
-        LocalDateTime endLocalDateTime;
         if (startDateTime != null) {
             startLocalDateTime = LocalDateTime.parse(startDateTime, DateTimeFormatter.ofPattern("yyyyMMddHHmm"));
         } else {
             startLocalDateTime = now;
         }
+        LocalDateTime endLocalDateTime;
         if (endDateTime != null) {
             endLocalDateTime = LocalDateTime.parse(endDateTime, DateTimeFormatter.ofPattern("yyyyMMddHHmm"));
         } else {

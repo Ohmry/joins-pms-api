@@ -1,4 +1,4 @@
-package joins.pms.api.exception;
+package joins.pms.api.exception.handler;
 
 import joins.pms.api.http.ApiResponse;
 import joins.pms.api.http.ApiStatus;
@@ -13,7 +13,7 @@ public class InterceptorExceptionHandler {
     public ResponseEntity<ApiResponse> handleUnauthorizeException() {
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
-                .body(new ApiResponse(ApiStatus.UNAUTHORIZATION));
+                .body(new ApiResponse(ApiStatus.UNAUTHORIZED));
     }
 
 }

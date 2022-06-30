@@ -3,13 +3,11 @@ package joins.pms.api.user.model;
 import joins.pms.api.exception.IllegalRequestException;
 import org.springframework.util.StringUtils;
 
-public class UserPasswordUpdateRequest {
-    public Long id;
-    public String password;
-    public String newPassword;
-    
+public class ResigninRequest {
+    public String refreshToken;
+
     public void validate() {
-        if (id == null || id < 1 || !StringUtils.hasText(password) || !StringUtils.hasText(newPassword)) {
+        if (!StringUtils.hasText(refreshToken)) {
             throw new IllegalRequestException();
         }
     }

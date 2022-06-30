@@ -3,10 +3,9 @@ POST http://localhost:9091/api/signup HTTP/1.1
 Content-Type: application/json
 
 {
-  "id": null,
-  "name": "이병훈",
-  "email": "o.ohmry@gmail.com",
-  "password": "oohmry"
+    "email": "o.ohmry@gmail.com",
+    "password": "oohmry",
+    "name": "이병훈"
 }
 
 ###
@@ -14,44 +13,21 @@ POST http://localhost:9091/api/signin HTTP/1.1
 Content-Type: application/json
 
 {
-  "email": "o.ohmry@gmail.com",
-  "password": "oohmry"
+    "email": "o.ohmry@gmail.com",
+    "password": "oohmry"
 }
 
 ###
-POST http://localhost:9091/api/resign HTTP/1.1
-Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTYyNTIzMTksImV4cCI6MTY1NjI1NDExOSwicHJpbmNpcGFsIjoiby5vaG1yeUBnbWFpbC5jb20ifQ.BBE7fA4LUS2rEL3msIJHK8T4ArlYYWtfSLulK1tC7Kw
-
-{
-  "refreshToken": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTYyNTIzMTksImV4cCI6MTY1NjI5NTUxOSwicHJpbmNpcGFsIjoiby5vaG1yeUBnbWFpbC5jb20ifQ.0EtdPHOTRFb1UQwMNv1Hkawteer5h1uZcFkBTs6SyUw"
-}
-
-
-###
-GET http://localhost:9091/api/user/1 HTTP/1.1
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTYyNTIzMTksImV4cCI6MTY1NjI1NDExOSwicHJpbmNpcGFsIjoiby5vaG1yeUBnbWFpbC5jb20ifQ.BBE7fA4LUS2rEL3msIJHK8T4ArlYYWtfSLulK1tC7Kw
-
-###
-GET http://localhost:9091/api/user HTTP/1.1
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTYyNTIzMzcsImV4cCI6MTY1NjI1NDEzNywicHJpbmNpcGFsIjoiby5vaG1yeUBnbWFpbC5jb20ifQ.Dv6rJv1KNxMUsdOaE7AEDBfxzm0N7hmKobs8ReXX9W0
-
-###
-PUT http://localhost:9091/api/user/1 HTTP/1.1
-Content-Type: application/json
-Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJvLm9obXJ5QGdtYWlsLmNvbSIsImlhdCI6MTY1NjI0NDcyNCwiZXhwIjoxNjU2MjQ2NTI0fQ.D708t5vjCo6axIGmXeB9Y2gbYFURvGgDSjgO_1Xm1jw
-
-{
-  "id": 1,
-  "name": "이병훈_수정"
-}
-
-###
-PUT http://localhost:9091/api/user/1/credential HTTP/1.1
+PUT http://localhost:9091/api/user HTTP/1.1
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTY0ODM0ODUsImV4cCI6MTY1NjQ4NTI4NSwidXNlcklkIjoxLCJlbWFpbCI6Im8ub2htcnlAZ21haWwuY29tIiwiY2xpZW50SXAiOiIxMjcuMC4wLjEiLCJyb2xlcyI6WyJVU0VSIl19.09fw4hysybMkZq9bFq5zb2i8mfAXpSW2PjJa-AY6Edc
 Content-Type: application/json
 
 {
-  "id": 1,
-  "password": "oohmry",
-  "newPassword": "oohmry2"
+    "id": 1,
+    "name": "이병훈_수정",
+    "role": "ADMIN"
 }
+
+###
+GET http://localhost:9091/api/user?pageNo=0&recordCount=20 HTTP/1.1
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTY0ODM1OTQsImV4cCI6MTY1NjQ4NTM5NCwidXNlcklkIjoxLCJlbWFpbCI6Im8ub2htcnlAZ21haWwuY29tIiwiY2xpZW50SXAiOiIxMjcuMC4wLjEiLCJyb2xlcyI6WyJBRE1JTiJdfQ.jFsqlUFOw43MLYrx2e_RKdsURNsUOcUlRxewMKK3qug

@@ -1,0 +1,54 @@
+###
+GET http://localhost:9091/test
+
+###
+POST http://localhost:9091/api/v1/board
+Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTY0ODMwMTgsImV4cCI6MTY1NjQ4NDgxOCwidXNlcklkIjoxLCJlbWFpbCI6Im8ub2htcnlAZ21haWwuY29tIiwiY2xpZW50SXAiOiIxMjcuMC4wLjEiLCJyb2xlcyI6WyJBRE1JTiJdfQ.S0EeK_tl3MxUnDI2WxopM6QgEWwN78d8zUIin3Hwoys
+
+{
+    "title": "새로운 Board",
+    "description": "새롭게 만든 Board"
+}
+
+###
+GET http://localhost:9091/api/v1/board?pageNo=0&recordCount=20
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTY0ODExNjMsImV4cCI6MTY1NjQ4Mjk2MywiZW1haWwiOiJvLm9obXJ5QGdtYWlsLmNvbSIsImNsaWVudElwIjoiMTI3LjAuMC4xIiwicm9sZXMiOlsiVVNFUiJdfQ.7Vcx_D7rsMclnKh3bK3aMefQLHcuLxC0-Ah0G875pN8
+
+###
+POST http://localhost:9091/api/v1/board/1/project
+Content-Type: application/json
+
+{
+    "title": "새로운 Project",
+    "description": "새롭게 만든 Project",
+    "startDateTime": "202206010000",
+    "endDateTime": "202206302359"
+}
+
+###
+POST http://localhost:9091/api/v1/board/1/project/1/task
+Content-Type: application/json
+
+{
+    "title": "새로운 Task",
+    "description": "새롭게 만든 Task"
+}
+
+###
+GET http://localhost:9091/api/v1/board/1/project/1
+
+###
+PUT http://localhost:9091/api/v1/board/1/project
+Content-Type: application/json
+
+{
+    "id": 1,
+    "title": "수정된 Project",
+    "description": "정보가 수정된 Project",
+    "startDateTime": "202207010000",
+    "endDateTime": "202207312359",
+    "progress": "READY",
+    "boardId": 1,
+    "boardName": "새로운 Board"
+}
