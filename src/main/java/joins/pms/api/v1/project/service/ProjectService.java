@@ -6,7 +6,7 @@ import joins.pms.api.exception.DomainNotFoundException;
 import joins.pms.api.v1.board.domain.Board;
 import joins.pms.api.v1.board.repository.BoardRepository;
 import joins.pms.api.v1.project.domain.Project;
-import joins.pms.api.v1.project.domain.ProjectInfo;
+import joins.pms.api.v1.project.model.ProjectInfo;
 import joins.pms.api.v1.project.repository.ProjectRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;

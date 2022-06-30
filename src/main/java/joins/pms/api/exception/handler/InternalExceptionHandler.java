@@ -3,8 +3,10 @@ package joins.pms.api.exception.handler;
 import joins.pms.api.exception.BadCredentialException;
 import joins.pms.api.exception.DomainNotFoundException;
 import joins.pms.api.exception.IllegalRequestException;
+import joins.pms.api.group.exception.GroupNameAlreadyExistsException;
 import joins.pms.api.http.ApiResponse;
 import joins.pms.api.http.ApiStatus;
+import joins.pms.api.user.exception.UserEmailAlreadyExistsException;
 import joins.pms.core.jwt.exception.JwtTokenExpiredException;
 import joins.pms.core.jwt.exception.JwtTokenInvalidException;
 import org.springframework.boot.web.servlet.error.ErrorController;
@@ -54,7 +56,21 @@ public class InternalExceptionHandler implements ErrorController {
                 .status(HttpStatus.UNAUTHORIZED)
                 .body(new ApiResponse(ApiStatus.JWT_TOKEN_EXPIRED));
     }
-    
+
+    @ExceptionHandler(UserEmailAlreadyExistsException.class)
+    public ResponseEntity<ApiResponse> handleUserEmailAlreadyExistsException(UserEmailAlreadyExistsException e) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new ApiResponse(ApiStatus.USER_EMAIL_ALREADY_EXISTS));
+    }
+
+    @ExceptionHandler(GroupNameAlreadyExistsException.class)
+    public ResponseEntity<ApiResponse> handleGroupNameAlreadyExistsException(GroupNameAlreadyExistsException e) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new ApiResponse(ApiStatus.GROUP_NAME_ALREADY_EXISTS));
+    }
+
     @RequestMapping("/error")
     public ResponseEntity<ApiResponse> handle (HttpServletRequest request) {
         Object requestUriObject = request.getAttribute("requestUri");

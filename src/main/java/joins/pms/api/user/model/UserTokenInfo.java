@@ -1,4 +1,6 @@
-package joins.pms.api.user.domain;
+package joins.pms.api.user.model;
+
+import joins.pms.api.user.domain.UserToken;
 
 public class UserTokenInfo {
     public final String accessToken;

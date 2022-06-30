@@ -80,7 +80,7 @@ public class JwtToken {
     public static String generate(JwtToken.Type type, Long id, String email, String clientIp, String userRole) {
         switch (type) {
             case accessToken:
-                return _generateToken(id, email, clientIp, userRole, 1);
+                return _generateToken(id, email, clientIp, userRole, 30);
             case refreshToken:
                 return _generateToken(id, email, clientIp, userRole, 60 * 12);
             default:

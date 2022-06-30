@@ -13,6 +13,9 @@ public enum ApiStatus {
     /** User(100 ~ 199, -100 ~ -199) */
     USER_NEED_RESIGNIN(100, "정보가 성공적으로 변경되었습니다. 로그인을 다시 시도해주세요"),
     BAD_CREDENTIAL(-100, "이메일 또는 비밀번호가 올바르지 않습니다."),
+    USER_EMAIL_ALREADY_EXISTS(-101, "이미 존재하는 이메일 주소입니다."),
+    /** Group (200 ~ 299, -200 ~ -299) */
+    GROUP_NAME_ALREADY_EXISTS(-200, "이미 존재하는 그룹 이름입니다."),
     /** Common (-900 ~ -999) */
     ILLEGAL_PARAMETERS(-900, "파라미터가 올바르지 않습니다."),
     DOMAIN_NOT_FOUND(-901, "정보를 찾을 수 없습니다."),

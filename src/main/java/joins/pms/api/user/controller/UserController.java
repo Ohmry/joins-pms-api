@@ -1,13 +1,13 @@
 package joins.pms.api.user.controller;
 
-import joins.pms.api.exception.UnauthorizationException;
 import joins.pms.api.http.ApiResponse;
 import joins.pms.api.http.ApiStatus;
-import joins.pms.api.user.domain.UserInfo;
-import joins.pms.api.user.domain.UserRole;
-import joins.pms.api.user.domain.UserToken;
-import joins.pms.api.user.domain.UserTokenInfo;
-import joins.pms.api.user.model.*;
+import joins.pms.api.user.model.UserInfo;
+import joins.pms.api.user.model.UserTokenInfo;
+import joins.pms.api.user.model.SigninRequest;
+import joins.pms.api.user.model.SignupRequest;
+import joins.pms.api.user.model.UserPasswordUpdateRequest;
+import joins.pms.api.user.model.UserUpdateRequest;
 import joins.pms.api.user.service.UserService;
 import joins.pms.core.annotations.AdminOnly;
 import joins.pms.core.jwt.JwtToken;
@@ -84,7 +84,7 @@ public class UserController {
     
     @PutMapping("/user")
     public ResponseEntity<ApiResponse> updateUser(HttpServletRequest servletRequest, @RequestBody UserUpdateRequest request) {
-        Object userIdObject = servletRequest.getAttribute("userId");
+        Object userIdObject = servletRequest.getAttribute(JwtToken.CLAIMS_USER_ID);
         userService.validateSession(userIdObject, request.id);
         request.validate();
         Long userId = userService.updateUser(request.id, request.name, request.role);

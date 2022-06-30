@@ -1,6 +1,7 @@
-package joins.pms.api.v1.task.domain;
+package joins.pms.api.v1.task.model;
 
 import joins.pms.api.domain.Progress;
+import joins.pms.api.v1.task.domain.Task;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

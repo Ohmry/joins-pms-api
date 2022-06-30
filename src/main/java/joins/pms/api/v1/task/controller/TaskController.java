@@ -2,7 +2,7 @@ package joins.pms.api.v1.task.controller;
 
 import joins.pms.api.http.ApiResponse;
 import joins.pms.api.http.ApiStatus;
-import joins.pms.api.v1.task.domain.TaskInfo;
+import joins.pms.api.v1.task.model.TaskInfo;
 import joins.pms.api.v1.task.model.TaskCreateRequest;
 import joins.pms.api.v1.task.model.TaskUpdateRequest;
 import joins.pms.api.v1.task.service.TaskService;

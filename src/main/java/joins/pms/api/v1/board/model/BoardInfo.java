@@ -1,5 +1,6 @@
-package joins.pms.api.v1.board.domain;
+package joins.pms.api.v1.board.model;
 
+import joins.pms.api.v1.board.domain.Board;
 import joins.pms.core.annotations.ValueObject;
 
 @ValueObject

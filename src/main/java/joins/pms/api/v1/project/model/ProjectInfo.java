@@ -1,6 +1,7 @@
-package joins.pms.api.v1.project.domain;
+package joins.pms.api.v1.project.model;
 
 import joins.pms.api.domain.Progress;
+import joins.pms.api.v1.project.domain.Project;
 import joins.pms.core.annotations.ValueObject;
 
 import java.time.LocalDateTime;

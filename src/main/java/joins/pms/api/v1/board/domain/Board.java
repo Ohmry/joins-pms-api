@@ -2,6 +2,7 @@ package joins.pms.api.v1.board.domain;
 
 import joins.pms.api.domain.BaseEntity;
 import joins.pms.api.domain.RowStatus;
+import joins.pms.api.group.domain.Group;
 import joins.pms.api.user.domain.User;
 import joins.pms.api.v1.project.domain.Project;
 import joins.pms.api.v1.task.domain.Task;
@@ -10,6 +11,7 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
+@Table(name = "TB_PM_BOARD")
 public class Board extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +23,9 @@ public class Board extends BaseEntity {
     @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "owner")
     private User owner;
+    @ManyToOne(targetEntity = Group.class, fetch = FetchType.LAZY)
+    @JoinColumn(name = "group_id")
+    private Group group;
     @OneToMany(mappedBy = "board")
     private Set<Project> projects;
     @OneToMany(mappedBy = "board")
@@ -51,7 +56,7 @@ public class Board extends BaseEntity {
     public String getDescription() {
         return this.description;
     }
-    
+
     public void update(Field field, Object value) {
         switch (field) {
             case title:

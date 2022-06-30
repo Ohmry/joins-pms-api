@@ -3,7 +3,7 @@ package joins.pms.api.v1.board.service;
 import joins.pms.api.domain.RowStatus;
 import joins.pms.api.exception.DomainNotFoundException;
 import joins.pms.api.v1.board.domain.Board;
-import joins.pms.api.v1.board.domain.BoardInfo;
+import joins.pms.api.v1.board.model.BoardInfo;
 import joins.pms.api.v1.board.repository.BoardRepository;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;

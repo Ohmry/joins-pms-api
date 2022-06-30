@@ -2,7 +2,7 @@ package joins.pms.api.v1.board.controller;
 
 import joins.pms.api.http.ApiResponse;
 import joins.pms.api.http.ApiStatus;
-import joins.pms.api.v1.board.domain.BoardInfo;
+import joins.pms.api.v1.board.model.BoardInfo;
 import joins.pms.api.v1.board.model.BoardCreateRequest;
 import joins.pms.api.v1.board.model.BoardUpdateRequest;
 import joins.pms.api.v1.board.service.BoardService;

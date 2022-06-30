@@ -8,6 +8,8 @@ import joins.pms.api.exception.IllegalRequestException;
 import joins.pms.api.exception.UnauthorizationException;
 import joins.pms.api.user.domain.*;
 import joins.pms.api.user.exception.UserEmailAlreadyExistsException;
+import joins.pms.api.user.model.UserInfo;
+import joins.pms.api.user.model.UserTokenInfo;
 import joins.pms.api.user.repository.UserRepository;
 import joins.pms.core.jwt.JwtToken;
 import joins.pms.core.jwt.exception.JwtTokenInvalidException;
@@ -15,7 +17,6 @@ import joins.pms.core.utils.Password;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
