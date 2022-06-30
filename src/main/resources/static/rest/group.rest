@@ -1,0 +1,49 @@
+###
+POST http://localhost:9091/api/signup HTTP/1.1
+Content-Type: application/json
+
+{
+    "email": "o.ohmry@gmail.com",
+    "password": "oohmry",
+    "name": "이병훈"
+}
+
+###
+POST http://localhost:9091/api/signin HTTP/1.1
+Content-Type: application/json
+
+{
+    "email": "o.ohmry@gmail.com",
+    "password": "oohmry"
+}
+
+###
+GET http://localhost:9091/api/user/1
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTY1OTAzNzIsImV4cCI6MTY1NjU5MjE3MiwidXNlcklkIjoxLCJlbWFpbCI6Im8ub2htcnlAZ21haWwuY29tIiwiY2xpZW50SXAiOiIxMjcuMC4wLjEiLCJyb2xlcyI6IlVTRVIifQ.NCIbO01CfaALa14ULp5-aNq9T0bladW-RxW758YDKvY
+
+###
+POST http://localhost:9091/api/group
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTY1OTAzNzIsImV4cCI6MTY1NjU5MjE3MiwidXNlcklkIjoxLCJlbWFpbCI6Im8ub2htcnlAZ21haWwuY29tIiwiY2xpZW50SXAiOiIxMjcuMC4wLjEiLCJyb2xlcyI6IlVTRVIifQ.NCIbO01CfaALa14ULp5-aNq9T0bladW-RxW758YDKvY
+Content-Type: application/json
+
+{
+  "name": "새롭게 생성한 Group"
+}
+
+###
+GET http://localhost:9091/api/group/1
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTY1OTAzNzIsImV4cCI6MTY1NjU5MjE3MiwidXNlcklkIjoxLCJlbWFpbCI6Im8ub2htcnlAZ21haWwuY29tIiwiY2xpZW50SXAiOiIxMjcuMC4wLjEiLCJyb2xlcyI6IlVTRVIifQ.NCIbO01CfaALa14ULp5-aNq9T0bladW-RxW758YDKvY
+
+###
+POST http://localhost:9091/api/group/1/user
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTY1OTAzNzIsImV4cCI6MTY1NjU5MjE3MiwidXNlcklkIjoxLCJlbWFpbCI6Im8ub2htcnlAZ21haWwuY29tIiwiY2xpZW50SXAiOiIxMjcuMC4wLjEiLCJyb2xlcyI6IlVTRVIifQ.NCIbO01CfaALa14ULp5-aNq9T0bladW-RxW758YDKvY
+Content-Type: application/json
+
+{
+  "userId": 1
+}
+
+
+###
+DELETE http://localhost:9091/api/group/1/user/1
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2NTY1OTAzNzIsImV4cCI6MTY1NjU5MjE3MiwidXNlcklkIjoxLCJlbWFpbCI6Im8ub2htcnlAZ21haWwuY29tIiwiY2xpZW50SXAiOiIxMjcuMC4wLjEiLCJyb2xlcyI6IlVTRVIifQ.NCIbO01CfaALa14ULp5-aNq9T0bladW-RxW758YDKvY
