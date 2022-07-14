@@ -13,7 +13,7 @@ public class AuthenticationConfigurer implements WebMvcConfigurer {
     private final RequestDenyInterceptor requestDenyInterceptor;
     
     private final List<String> DENY_INTERCEPTOR_WHITELIST = Arrays.asList(
-        "/api/**", "/api/signin", "/api/signup", "/console", "/error", "/unauthorized"
+        "/api/**", "/api/signin", "/api/signup", "/console", "/error", "/unauthorized", "/api/test"
     );
     
     public AuthenticationConfigurer(AuthenticationInterceptor authenticationInterceptor,
@@ -25,7 +25,7 @@ public class AuthenticationConfigurer implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(authenticationInterceptor)
-            .excludePathPatterns("/api/signin", "/api/signup")
+            .excludePathPatterns("/api/signin", "/api/signup", "/api/test")
             .addPathPatterns("/api/**");
         registry.addInterceptor(requestDenyInterceptor)
             .excludePathPatterns(DENY_INTERCEPTOR_WHITELIST);
