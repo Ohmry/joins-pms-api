@@ -5,15 +5,17 @@ import joins.pms.core.annotations.ValueObject;
 
 @ValueObject
 public class UserTokenInfo {
+    public final long id;
     public final String accessToken;
     public final String refreshToken;
 
-    public UserTokenInfo(String accessToken, String refreshToken) {
+    public UserTokenInfo(long userId, String accessToken, String refreshToken) {
+        this.id = userId;
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
     }
 
-    public static UserTokenInfo valueOf(UserToken userToken) {
-        return new UserTokenInfo(userToken.getAccessToken(),userToken.getRefreshToken());
+    public static UserTokenInfo valueOf(long userId, UserToken userToken) {
+        return new UserTokenInfo(userId, userToken.getAccessToken(),userToken.getRefreshToken());
     }
 }
