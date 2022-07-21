@@ -2,12 +2,7 @@ package joins.pms.api.user.controller;
 
 import joins.pms.api.http.ApiResponse;
 import joins.pms.api.http.ApiStatus;
-import joins.pms.api.user.model.UserInfo;
-import joins.pms.api.user.model.UserTokenInfo;
-import joins.pms.api.user.model.SigninRequest;
-import joins.pms.api.user.model.SignupRequest;
-import joins.pms.api.user.model.UserPasswordUpdateRequest;
-import joins.pms.api.user.model.UserUpdateRequest;
+import joins.pms.api.user.model.*;
 import joins.pms.api.user.service.UserService;
 import joins.pms.core.annotations.AdminOnly;
 import joins.pms.core.jwt.JwtToken;
@@ -48,7 +43,7 @@ public class UserController {
         UserTokenInfo userTokenInfo = userService.createToken(userInfo.id, userInfo.email, clientIp);
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(new ApiResponse(ApiStatus.SUCCESS, userTokenInfo));
+            .body(new ApiResponse(ApiStatus.SUCCESS, UserSigninInfo.valueOf(userInfo, userTokenInfo)));
     }
 
     @PostMapping("/resignin")

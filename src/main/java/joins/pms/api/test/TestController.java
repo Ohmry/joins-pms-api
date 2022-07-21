@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api")
 public class TestController {
-    @ResponseBody
     @PostMapping("/test")
-    public String helloWorld(@RequestBody String message) {
-        return message;
+    public ResponseEntity<ApiResponse> helloWorld(@RequestBody String message) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(new ApiResponse(ApiStatus.SUCCESS, message));
     }
 }

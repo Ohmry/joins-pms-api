@@ -1,7 +1,6 @@
 package joins.pms.api.user.model;
 
 import joins.pms.api.user.domain.User;
-import joins.pms.api.user.domain.UserRole;
 import joins.pms.core.annotations.ValueObject;
 
 @ValueObject

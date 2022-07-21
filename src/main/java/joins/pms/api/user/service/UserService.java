@@ -124,7 +124,7 @@ public class UserService {
         user.update(User.Field.refreshToken, refreshToken);
         userRepository.save(user);
 
-        return UserTokenInfo.valueOf(userId, user.getToken());
+        return UserTokenInfo.valueOf(user.getToken());
     }
 
     public UserTokenInfo refreshToken(Long userId, String accessToken, String refreshToken) {
@@ -145,7 +145,7 @@ public class UserService {
         user.update(User.Field.refreshToken, refreshToken);
         userRepository.save(user);
 
-        return UserTokenInfo.valueOf(userId, user.getToken());
+        return UserTokenInfo.valueOf(user.getToken());
     }
 
     public void validateToken(Long userId, String accessToken) {
