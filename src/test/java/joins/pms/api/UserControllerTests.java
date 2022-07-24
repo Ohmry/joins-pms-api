@@ -100,19 +100,13 @@ public class UserControllerTests {
         request.put("email", "o.ohmry@gmail.com");
         request.put("password", "admin");
 
-        MvcResult result = mockMvc.perform(post("/api/signin")
+        mockMvc.perform(post("/api/signin")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(request.toString()))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.accessToken").exists())
-                .andExpect(jsonPath("$.data.refreshToken").exists())
+                .andExpect(jsonPath("$.data.email").value(request.get("email")))
                 .andDo(print())
                 .andReturn();
-
-        JSONObject response = new JSONObject(result.getResponse().getContentAsString(StandardCharsets.UTF_8));
-        JSONObject data = response.getJSONObject("data");
-        accessToken = data.getString("accessToken");
-        refreshToken = data.getString("refreshToken");
     }
 
     @Test

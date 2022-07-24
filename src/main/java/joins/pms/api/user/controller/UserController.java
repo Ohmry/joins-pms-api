@@ -1,7 +1,11 @@
 package joins.pms.api.user.controller;
 
+import joins.pms.api.exception.BadCredentialException;
 import joins.pms.api.http.ApiResponse;
 import joins.pms.api.http.ApiStatus;
+import joins.pms.api.http.service.SessionService;
+import joins.pms.api.user.exception.UserEmailAlreadyExistsException;
+import joins.pms.api.user.exception.UserNotFoundException;
 import joins.pms.api.user.model.*;
 import joins.pms.api.user.service.UserService;
 import joins.pms.core.annotations.AdminOnly;
@@ -18,32 +22,44 @@ import java.util.List;
 @RequestMapping("/api")
 public class UserController {
     private final UserService userService;
+    private final SessionService sessionService;
     
-    public UserController(UserService userService) {
+    public UserController(UserService userService,
+                          SessionService sessionService) {
         this.userService = userService;
+        this.sessionService = sessionService;
     }
     
     @PostMapping("/signup")
     public ResponseEntity<ApiResponse> signup(@RequestBody SignupRequest request) {
         request.validate();
-        userService.checkEmailIsExists(request.email);
-        Long userId = userService.createUser(request.email, request.password, request.name);
-        UserInfo userInfo = userService.getUser(userId);
+        if (userService.existsUserByEmail(request.email)) {
+            throw new UserEmailAlreadyExistsException(request.email);
+        }
+        UserInfo userInfo = userService.createUser(request.email, request.password, request.name);
         return ResponseEntity
             .status(HttpStatus.CREATED)
-            .header("Location", "/api/user/" + userId)
+            .header("Location", "/api/user/" + userInfo.id)
             .body(new ApiResponse(ApiStatus.SUCCESS, userInfo));
     }
     
     @PostMapping("/signin")
     public ResponseEntity<ApiResponse> signin(HttpServletRequest servletRequest, @RequestBody SigninRequest request) {
         request.validate();
-        UserInfo userInfo = userService.signin(request.email, request.password);
-        String clientIp = servletRequest.getRemoteAddr();
-        UserTokenInfo userTokenInfo = userService.createToken(userInfo.id, userInfo.email, clientIp);
+
+        UserInfo userInfo = userService.getUserByEmail(request.email);
+        if (userInfo == null) {
+            throw new UserNotFoundException(request.email);
+        }
+
+        if (!userService.verifyUser(userInfo, request.password)) {
+            throw new BadCredentialException();
+        }
+
+        sessionService.setUserInfo(servletRequest, userInfo);
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(new ApiResponse(ApiStatus.SUCCESS, UserSigninInfo.valueOf(userInfo, userTokenInfo)));
+            .body(new ApiResponse(ApiStatus.SUCCESS, userInfo));
     }
 
     @PostMapping("/resignin")
@@ -116,12 +132,5 @@ public class UserController {
         userService.deleteUser(id);
         return ResponseEntity
             .status(HttpStatus.NO_CONTENT).build();
-    }
-
-    @DeleteMapping("/user/{id}/group/{groupId}")
-    public ResponseEntity<ApiResponse> leaveGroup(@PathVariable Long id, @PathVariable Long groupId) {
-        userService.leaveGroup(id, groupId);
-        return ResponseEntity
-                .status(HttpStatus.NO_CONTENT).build();
     }
 }

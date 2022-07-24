@@ -6,11 +6,10 @@ import joins.pms.api.exception.BadCredentialException;
 import joins.pms.api.exception.DomainNotFoundException;
 import joins.pms.api.exception.IllegalRequestException;
 import joins.pms.api.exception.UnauthorizationException;
-import joins.pms.api.group.domain.Group;
-import joins.pms.api.group.repository.GroupRepository;
 import joins.pms.api.user.domain.User;
 import joins.pms.api.user.domain.UserRole;
 import joins.pms.api.user.exception.UserEmailAlreadyExistsException;
+import joins.pms.api.user.exception.UserNotFoundException;
 import joins.pms.api.user.model.UserInfo;
 import joins.pms.api.user.model.UserTokenInfo;
 import joins.pms.api.user.repository.UserRepository;
@@ -20,18 +19,16 @@ import joins.pms.core.utils.Password;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class UserService {
     private final UserRepository userRepository;
-    private final GroupRepository groupRepository;
     
-    public UserService(UserRepository userRepository,
-                       GroupRepository groupRepository) {
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.groupRepository = groupRepository;
     }
     
     public UserInfo signin(String email, String password) {
@@ -43,16 +40,31 @@ public class UserService {
         }
         return UserInfo.valueOf(user);
     }
+
+    public boolean verifyUser(UserInfo userInfo, String password) {
+        User user = userRepository.findByIdAndRowStatus(userInfo.id, RowStatus.NORMAL)
+                .orElseThrow(() -> new UserNotFoundException(userInfo.email));
+        PasswordEncoder encoder = Password.getInstance();
+        return encoder.matches(password, user.getPassword());
+    }
     
-    public Long createUser(String email, String password, String name) {
+    public UserInfo createUser(String email, String password, String name) {
         PasswordEncoder encoder = Password.getInstance();
         User user = User.create(email, encoder.encode(password), name, UserRole.USER);
-        return userRepository.save(user).getId();
+        userRepository.save(user);
+        return UserInfo.valueOf(user);
     }
     
     public UserInfo getUser(Long userId) {
         User user = userRepository.findByIdAndRowStatus(userId, RowStatus.NORMAL)
             .orElseThrow(() -> new DomainNotFoundException(User.class));
+        return UserInfo.valueOf(user);
+    }
+
+    public UserInfo getUserByEmail(String email) {
+
+        User user = userRepository.findByEmailAndRowStatus(email, RowStatus.NORMAL)
+                .orElseThrow(() -> new DomainNotFoundException(User.class));
         return UserInfo.valueOf(user);
     }
     
@@ -88,7 +100,12 @@ public class UserService {
         user.update(User.Field.rowStatus, RowStatus.DELETED);
         userRepository.save(user);
     }
-    
+
+    public boolean existsUserByEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
+    @Deprecated
     public void checkEmailIsExists(String email) {
         if (userRepository.existsByEmail(email)) {
             throw new UserEmailAlreadyExistsException(email);
@@ -154,14 +171,5 @@ public class UserService {
         if (!user.validate(User.Field.accessToken, accessToken)) {
             throw new JwtTokenInvalidException();
         }
-    }
-
-    public void leaveGroup(Long userId, Long groupId) {
-        User user = userRepository.findByIdAndRowStatus(userId, RowStatus.NORMAL)
-                .orElseThrow(() -> new DomainNotFoundException(User.class));
-        Group group = groupRepository.findByIdAndRowStatus(groupId, RowStatus.NORMAL)
-                .orElseThrow(() -> new DomainNotFoundException(Group.class));
-        user.leaveGroup(group);
-        userRepository.save(user);
     }
 }
